@@ -415,7 +415,7 @@ function getStock(){
 
 }
 
-function saveItem(){
+function saveItem() {
 
     const pn =
         document.getElementById("pn").value.trim();
@@ -432,17 +432,29 @@ function saveItem(){
     const location =
         document.getElementById("location").value.trim();
 
+    if (!pn || !lot || !date || !qty || !location) {
+
+        alert("กรุณากรอกข้อมูลให้ครบ");
+
+        return;
+    }
+
     const data = getStock();
 
-    // ตรวจสอบ Lot ซ้ำ
     const duplicateLot = data.find(item =>
-        item.lot.toLowerCase() === lot.toLowerCase()
+
+        item.lot &&
+        item.lot.trim().toLowerCase() ===
+        lot.toLowerCase()
+
     );
 
     if (duplicateLot) {
 
         alert(
-            "❌ Lot No นี้มีอยู่ในระบบแล้ว"
+            "❌ Lot No นี้มีอยู่ในระบบแล้ว\n\n" +
+            "PN : " + duplicateLot.pn +
+            "\nLocation : " + duplicateLot.location
         );
 
         return;
@@ -468,7 +480,6 @@ function saveItem(){
     displayData();
 
     alert("✅ บันทึกสำเร็จ");
-
 }
 
 function displayData(dataList=null){
