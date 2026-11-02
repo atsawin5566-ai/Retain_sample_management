@@ -417,34 +417,44 @@ function getStock(){
 
 function saveItem(){
 
+    const pn =
+        document.getElementById("pn").value.trim();
+
+    const lot =
+        document.getElementById("lot").value.trim();
+
+    const date =
+        document.getElementById("storeDate").value;
+
+    const qty =
+        document.getElementById("qty").value;
+
+    const location =
+        document.getElementById("location").value.trim();
+
     const data = getStock();
+
+    // ตรวจสอบ Lot ซ้ำ
+    const duplicateLot = data.find(item =>
+        item.lot.toLowerCase() === lot.toLowerCase()
+    );
+
+    if (duplicateLot) {
+
+        alert(
+            "❌ Lot No นี้มีอยู่ในระบบแล้ว"
+        );
+
+        return;
+    }
 
     data.push({
 
-        pn:
-        document
-        .getElementById("pn")
-        .value,
-
-        lot:
-        document
-        .getElementById("lot")
-        .value,
-
-        date:
-        document
-        .getElementById("storeDate")
-        .value,
-
-        qty:
-        document
-        .getElementById("qty")
-        .value,
-
-        location:
-        document
-        .getElementById("location")
-        .value
+        pn: pn,
+        lot: lot,
+        date: date,
+        qty: qty,
+        location: location
 
     });
 
@@ -453,7 +463,11 @@ function saveItem(){
         JSON.stringify(data)
     );
 
+    clearForm();
+
     displayData();
+
+    alert("✅ บันทึกสำเร็จ");
 
 }
 
