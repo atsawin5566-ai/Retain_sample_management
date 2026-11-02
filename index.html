@@ -310,7 +310,9 @@ const users = [
 }
 
 ];
-
+      
+let editIndex = -1;
+      
 /* LOGIN */
 
 function login(){
@@ -487,7 +489,7 @@ function displayData(dataList=null){
     let warning=0;
     let expired=0;
 
-    data.forEach(item=>{
+    data.forEach((item, index) => {
 
         let age = 0;
 
@@ -527,25 +529,52 @@ function displayData(dataList=null){
 
         }
 
-        body.innerHTML += `
+       let actionButton = "";
 
-        <tr>
+const currentUser =
+    getCurrentUser();
 
-        <td>${item.pn}</td>
+if (
+    currentUser &&
+    currentUser.role === "Admin"
+) {
 
-        <td>${item.lot}</td>
+    actionButton = `
 
-        <td>${item.date}</td>
+        <button
+            onclick="editItem(${index})">
+            แก้ไข
+        </button>
 
-        <td>${item.qty}</td>
+        <button
+            onclick="deleteItem(${index})">
+            ลบ
+        </button>
 
-        <td>${item.location}</td>
+    `;
+}
 
-        <td>${status}</td>
+body.innerHTML += `
 
-        </tr>
+<tr>
 
-        `;
+    <td>${item.pn}</td>
+
+    <td>${item.lot}</td>
+
+    <td>${item.date}</td>
+
+    <td>${item.qty}</td>
+
+    <td>${item.location}</td>
+
+    <td>${status}</td>
+
+    <td>${actionButton}</td>
+
+</tr>
+
+`;
 
     });
 
