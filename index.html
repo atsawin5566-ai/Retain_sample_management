@@ -1,1 +1,607 @@
-<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stock Pro V3.1</title><style>body{font-family:Arial;background:#f4f6f8;margin:0}.hdr{background:#fff;padding:12px;border-bottom:3px solid #5b4df5}.wrap{padding:15px}.card{background:#fff;padding:12px;margin:10px 0;border-radius:8px}input,button{padding:8px;margin:4px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #ddd;padding:6px}th{background:#5b4df5;color:#fff}.hidden{display:none}</style></head><body><div class="hdr"><h2>🟣 Solstice Technologies (Thailand) Co., Ltd.</h2><div>Stock Location & Shelf Life Management System V3.1</div></div><div class="wrap"><div id="login"><div class="card"><h3>Login</h3><input id="u" placeholder="Username"><input id="p" type="password" placeholder="Password"><button onclick="doLogin()">Login</button><p>admin/admin123 | supervisor/sup123 | user/user123</p></div></div><div id="app" class="hidden"><div class="card"><span id="who"></span> <button onclick="logout()">Logout</button></div><div class="card">Normal:<span id="n">0</span> | Near Expiry:<span id="w">0</span> | Expired:<span id="e">0</span></div><div class="card"><input id="pn" placeholder="PN"><input id="lot" placeholder="Lot"><input id="dt" type="date"><input id="qty" type="number" placeholder="Qty"><input id="loc" placeholder="Location"><button id="saveBtn" onclick="addRow()">บันทึก</button></div><table><thead><tr><th>PN</th><th>Lot</th><th>Qty</th><th>Location</th></tr></thead><tbody id="tb"></tbody></table></div></div><script>const users=[{username:'admin',password:'admin123',role:'Admin'},{username:'supervisor',password:'sup123',role:'Supervisor'},{username:'user',password:'user123',role:'User'}];function getUser(){try{return JSON.parse(localStorage.getItem('user'));}catch(e){return null}}function doLogin(){const username=document.getElementById('u').value.trim();const password=document.getElementById('p').value.trim();const user=users.find(x=>x.username===username&&x.password===password);if(!user){alert('Username หรือ Password ไม่ถูกต้อง');return;}localStorage.setItem('user',JSON.stringify(user));showApp();}function showApp(){const user=getUser();if(!user)return;document.getElementById('login').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('who').innerText='User: '+user.username+' ('+user.role+')';render();}function logout(){localStorage.removeItem('user');location.reload();}function inv(){return JSON.parse(localStorage.getItem('inventory')||'[]')}function saveInv(d){localStorage.setItem('inventory',JSON.stringify(d));}function addRow(){const d=inv();d.push({pn:pn.value,lot:lot.value,date:dt.value,qty:qty.value,loc:loc.value});saveInv(d);render();}function render(){const d=inv();tb.innerHTML='';d.forEach(r=>tb.innerHTML+=`<tr><td>${r.pn}</td><td>${r.lot}</td><td>${r.qty}</td><td>${r.loc}</td></tr>`);}window.onload=function(){if(getUser())showApp();}</script></body></html>
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Stock Pro V3.1</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f6f8;
+}
+
+.header{
+    background:#ffffff;
+    border-bottom:4px solid #5b4df5;
+    padding:15px 20px;
+}
+
+.header h1{
+    margin:0;
+    color:#333;
+}
+
+.container{
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:15px;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+input{
+    padding:8px;
+    margin:5px;
+}
+
+button{
+    padding:8px 12px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:center;
+}
+
+th{
+    background:#5b4df5;
+    color:white;
+}
+
+.hidden{
+    display:none;
+}
+
+.dashboard{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.box{
+    background:#ffffff;
+    padding:15px;
+    border-radius:10px;
+    min-width:180px;
+    text-align:center;
+    box-shadow:0 2px 5px rgba(0,0,0,.1);
+}
+
+.normal{
+    border-left:5px solid green;
+}
+
+.warning{
+    border-left:5px solid orange;
+}
+
+.expired{
+    border-left:5px solid red;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="header">
+
+<h1>
+    Solstice Technologies (Thailand) Co., Ltd.
+</h1>
+
+<p>
+    Stock Location & Shelf Life Management System V3.1
+</p>
+
+</header>
+
+<div class="container">
+
+<!-- LOGIN -->
+
+<div id="loginSection">
+
+    <div class="card">
+
+        <h2>Login</h2>
+
+        <input
+            id="username"
+            placeholder="Username"
+        >
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+        >
+
+        <button onclick="login()">
+            Login
+        </button>
+
+        <hr>
+
+        <p>
+            Admin : admin / admin123
+        </p>
+
+        <p>
+            Supervisor : supervisor / sup123
+        </p>
+
+        <p>
+            User : user / user123
+        </p>
+
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div
+id="mainSection"
+class="hidden"
+>
+
+<div class="card">
+
+    <span id="currentUser"></span>
+
+    <button onclick="logout()">
+        Logout
+    </button>
+
+</div>
+
+<div class="dashboard">
+
+    <div class="box normal">
+
+        <h3>Normal</h3>
+
+        <h1 id="normalCount">
+            0
+        </h1>
+
+    </div>
+
+    <div class="box warning">
+
+        <h3>Near Expiry</h3>
+
+        <h1 id="warningCount">
+            0
+        </h1>
+
+    </div>
+
+    <div class="box expired">
+
+        <h3>Expired</h3>
+
+        <h1 id="expiredCount">
+            0
+        </h1>
+
+    </div>
+
+</div>
+
+<div id="alertArea"></div>
+
+<div class="card">
+
+    <h3>เพิ่มสินค้า</h3>
+
+    <input id="pn" placeholder="PN">
+
+    <input id="lot" placeholder="Lot No">
+
+    <input id="storeDate" type="date">
+
+    <input id="qty" type="number" placeholder="Qty">
+
+    <input id="location" placeholder="Location">
+
+    <button
+        id="saveBtn"
+        onclick="saveItem()"
+    >
+        บันทึก
+    </button>
+
+</div>
+
+<div class="card">
+
+    <input
+        id="search"
+        placeholder="ค้นหา PN หรือ Lot"
+    >
+
+    <button onclick="searchItem()">
+        ค้นหา
+    </button>
+
+    <button onclick="displayData()">
+        แสดงทั้งหมด
+    </button>
+
+</div>
+
+<div class="card">
+
+<table>
+
+<thead>
+
+<tr>
+<th>PN</th>
+<th>Lot</th>
+<th>Date</th>
+<th>Qty</th>
+<th>Location</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="tableBody">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* USER */
+
+const users = [
+
+{
+    username:"admin",
+    password:"admin123",
+    role:"Admin"
+},
+
+{
+    username:"supervisor",
+    password:"sup123",
+    role:"Supervisor"
+},
+
+{
+    username:"user",
+    password:"user123",
+    role:"User"
+}
+
+];
+
+/* LOGIN */
+
+function login(){
+
+    const username =
+        document
+        .getElementById(
+            "username"
+        )
+        .value
+        .trim();
+
+    const password =
+        document
+        .getElementById(
+            "password"
+        )
+        .value
+        .trim();
+
+    const user =
+        users.find(x =>
+
+            x.username === username &&
+            x.password === password
+
+        );
+
+    if(!user){
+
+        alert(
+            "Username หรือ Password ไม่ถูกต้อง"
+        );
+
+        return;
+    }
+
+    localStorage.setItem(
+        "currentUser",
+        JSON.stringify(user)
+    );
+
+    showMain();
+
+}
+
+function logout(){
+
+    localStorage.removeItem(
+        "currentUser"
+    );
+
+    location.reload();
+
+}
+
+function showMain(){
+
+    const user =
+        JSON.parse(
+            localStorage.getItem(
+                "currentUser"
+            )
+        );
+
+    if(!user){
+        return;
+    }
+
+    document
+        .getElementById(
+            "loginSection"
+        )
+        .classList
+        .add("hidden");
+
+    document
+        .getElementById(
+            "mainSection"
+        )
+        .classList
+        .remove("hidden");
+
+    document
+        .getElementById(
+            "currentUser"
+        )
+        .innerText =
+        `${user.username}
+         (${user.role})`;
+
+    displayData();
+
+}
+
+/* STOCK */
+
+function getStock(){
+
+    return JSON.parse(
+
+        localStorage.getItem(
+            "stockData"
+        )
+
+    ) || [];
+
+}
+
+function saveItem(){
+
+    const data = getStock();
+
+    data.push({
+
+        pn:
+        document
+        .getElementById("pn")
+        .value,
+
+        lot:
+        document
+        .getElementById("lot")
+        .value,
+
+        date:
+        document
+        .getElementById("storeDate")
+        .value,
+
+        qty:
+        document
+        .getElementById("qty")
+        .value,
+
+        location:
+        document
+        .getElementById("location")
+        .value
+
+    });
+
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
+
+    displayData();
+
+}
+
+function displayData(dataList=null){
+
+    const data =
+        dataList || getStock();
+
+    const body =
+        document.getElementById(
+            "tableBody"
+        );
+
+    body.innerHTML = "";
+
+    let normal=0;
+    let warning=0;
+    let expired=0;
+
+    data.forEach(item=>{
+
+        let age = 0;
+
+        if(item.date){
+
+            age = Math.floor(
+
+                (new Date()
+                -
+                new Date(item.date))
+
+                /
+
+                (1000*60*60*24)
+
+            );
+
+        }
+
+        let status="✅";
+
+        if(age>=365){
+
+            status="❌ Expired";
+
+            expired++;
+
+        }else if(age>=335){
+
+            status="⚠️ Near Expiry";
+
+            warning++;
+
+        }else{
+
+            normal++;
+
+        }
+
+        body.innerHTML += `
+
+        <tr>
+
+        <td>${item.pn}</td>
+
+        <td>${item.lot}</td>
+
+        <td>${item.date}</td>
+
+        <td>${item.qty}</td>
+
+        <td>${item.location}</td>
+
+        <td>${status}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+    document
+    .getElementById(
+        "normalCount"
+    )
+    .innerText = normal;
+
+    document
+    .getElementById(
+        "warningCount"
+    )
+    .innerText = warning;
+
+    document
+    .getElementById(
+        "expiredCount"
+    )
+    .innerText = expired;
+
+}
+
+function searchItem(){
+
+    const keyword =
+
+    document
+    .getElementById(
+        "search"
+    )
+    .value
+    .toLowerCase();
+
+    const result =
+
+    getStock().filter(x =>
+
+        x.pn
+        .toLowerCase()
+        .includes(keyword)
+
+        ||
+
+        x.lot
+        .toLowerCase()
+        .includes(keyword)
+
+    );
+
+    displayData(result);
+
+}
+
+window.onload = function(){
+
+    const user =
+    localStorage.getItem(
+        "currentUser"
+    );
+
+    if(user){
+
+        showMain();
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>
