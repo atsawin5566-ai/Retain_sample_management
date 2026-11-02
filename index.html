@@ -439,22 +439,25 @@ function saveItem() {
         return;
     }
 
-    const data = getStock();
+    // ดึงข้อมูลจาก stockData โดยตรง
+    let data = JSON.parse(
+        localStorage.getItem("stockData")
+    ) || [];
 
-    const duplicateLot = data.find(item =>
+    // ตรวจ Lot ซ้ำ
+    const duplicateLot = data.some(item =>
 
-        item.lot &&
-        item.lot.trim().toLowerCase() ===
-        lot.toLowerCase()
+        String(item.lot || "")
+            .trim()
+            .toLowerCase() ===
+        lot.trim().toLowerCase()
 
     );
 
     if (duplicateLot) {
 
         alert(
-            "❌ Lot No นี้มีอยู่ในระบบแล้ว\n\n" +
-            "PN : " + duplicateLot.pn +
-            "\nLocation : " + duplicateLot.location
+            "❌ Lot No นี้มีอยู่ในระบบแล้ว"
         );
 
         return;
@@ -463,9 +466,13 @@ function saveItem() {
     data.push({
 
         pn: pn,
+
         lot: lot,
+
         date: date,
+
         qty: qty,
+
         location: location
 
     });
@@ -480,6 +487,7 @@ function saveItem() {
     displayData();
 
     alert("✅ บันทึกสำเร็จ");
+
 }
 
 function displayData(dataList=null){
