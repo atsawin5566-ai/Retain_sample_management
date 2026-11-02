@@ -624,6 +624,55 @@ window.onload = function(){
 
     }
 
+      function removeDuplicateLots() {
+
+    if (
+        !confirm(
+            "ต้องการลบ Lot ที่ซ้ำทั้งหมดหรือไม่?"
+        )
+    ) {
+        return;
+    }
+
+    let data = getStock();
+
+    let seenLots = new Set();
+
+    let uniqueData = [];
+
+    data.forEach(item => {
+
+        const lot =
+            item.lot
+                .trim()
+                .toLowerCase();
+
+        if (!seenLots.has(lot)) {
+
+            seenLots.add(lot);
+
+            uniqueData.push(item);
+
+        }
+
+    });
+
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(uniqueData)
+    );
+
+    displayData();
+
+    alert(
+        "✅ ลบ Lot ซ้ำเรียบร้อย\n" +
+        "เหลือ " +
+        uniqueData.length +
+        " รายการ"
+    );
+}
+
+      
 };
 
 </script>
