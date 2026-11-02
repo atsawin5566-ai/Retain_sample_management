@@ -417,64 +417,40 @@ function getStock(){
 
 function saveItem() {
 
-    const pn =
-        document.getElementById("pn").value.trim();
-
-    const lot =
-        document.getElementById("lot").value.trim();
-
-    const date =
-        document.getElementById("storeDate").value;
-
-    const qty =
-        document.getElementById("qty").value;
-
-    const location =
-        document.getElementById("location").value.trim();
+    const pn = document.getElementById("pn").value.trim();
+    const lot = document.getElementById("lot").value.trim();
+    const date = document.getElementById("storeDate").value;
+    const qty = document.getElementById("qty").value;
+    const location = document.getElementById("location").value.trim();
 
     if (!pn || !lot || !date || !qty || !location) {
-
         alert("กรุณากรอกข้อมูลให้ครบ");
-
         return;
     }
 
-    // ดึงข้อมูลจาก stockData โดยตรง
-    let data = JSON.parse(
-        localStorage.getItem("stockData")
-    ) || [];
+    let data = getStock();
 
-    // ตรวจ Lot ซ้ำ
-    const duplicateLot = data.some(item =>
-
-        String(item.lot || "")
-            .trim()
-            .toLowerCase() ===
+    const duplicateLot = data.find(item =>
+        item.lot &&
+        item.lot.trim().toLowerCase() ===
         lot.trim().toLowerCase()
-
     );
 
     if (duplicateLot) {
-
         alert(
-            "❌ Lot No นี้มีอยู่ในระบบแล้ว"
+            "❌ Lot No นี้มีอยู่ในระบบแล้ว\n\n" +
+            "PN : " + duplicateLot.pn +
+            "\nLocation : " + duplicateLot.location
         );
-
         return;
     }
 
     data.push({
-
-        pn: pn,
-
-        lot: lot,
-
-        date: date,
-
-        qty: qty,
-
-        location: location
-
+        pn,
+        lot,
+        date,
+        qty,
+        location
     });
 
     localStorage.setItem(
@@ -484,10 +460,10 @@ function saveItem() {
 
     clearForm();
 
-    displayData();
+    // โหลดข้อมูลใหม่จาก LocalStorage
+    displayData(getStock());
 
     alert("✅ บันทึกสำเร็จ");
-
 }
 
 function displayData(dataList=null){
