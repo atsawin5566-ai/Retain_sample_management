@@ -192,6 +192,8 @@ class="hidden"
         <h1 id="normalCount">
             0
         </h1>
+
+          
 <div class="card">
 
     <h3>📤 เบิกสินค้า</h3>
@@ -217,6 +219,33 @@ class="hidden"
     </button>
 
 </div>
+
+          <div class="card">
+
+    <h3>📥 คืนสินค้า</h3>
+
+    <input
+        id="returnLot"
+        placeholder="Lot No"
+    >
+
+    <input
+        id="returnQty"
+        type="number"
+        placeholder="จำนวน"
+    >
+
+    <input
+        id="returnBy"
+        placeholder="ผู้คืน"
+    >
+
+    <button onclick="returnItem()">
+        คืนสินค้า
+    </button>
+
+</div>
+          
     </div>
 
     <div class="box warning">
@@ -787,6 +816,252 @@ function getCurrentUser() {
     );
 
 }
+function borrowItem() {
+
+    const lot =
+        document.getElementById(
+            "borrowLot"
+        ).value.trim();
+
+    const qty =
+        Number(
+            document.getElementById(
+                "borrowQty"
+            ).value
+        );
+
+    const user =
+        document.getElementById(
+            "borrowBy"
+        ).value.trim();
+
+    const data = getStock();
+
+    const item =
+        data.find(
+            x => x.lot === lot
+        );
+
+    if (!item) {
+
+        alert("ไม่พบ Lot");
+
+        return;
+    }
+
+    if (qty > Number(item.qty)) {
+
+        alert(
+            "จำนวนคงเหลือไม่พอ"
+        );
+
+        return;
+    }
+
+    item.qty =
+        Number(item.qty) - qty;
+
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "borrowHistory"
+            )
+        ) || [];
+
+    history.push({
+
+        type: "BORROW",
+
+        date:
+        new Date()
+            .toLocaleString(),
+
+        pn: item.pn,
+
+        lot: item.lot,
+
+        qty: qty,
+
+        user: user
+
+    });
+
+    localStorage.setItem(
+        "borrowHistory",
+        JSON.stringify(history)
+    );
+
+    displayData();
+
+    alert("✅ เบิกสำเร็จ");
+}
+function returnItem() {
+
+    const lot =
+        document.getElementById(
+            "returnLot"
+        ).value.trim();
+
+    const qty =
+        Number(
+            document.getElementById(
+                "returnQty"
+            ).value
+        );
+
+    const user =
+        document.getElementById(
+            "returnBy"
+        ).value.trim();
+
+    const data = getStock();
+
+    const item =
+        data.find(
+            x => x.lot === lot
+        );
+
+    if (!item) {
+
+        alert("ไม่พบ Lot");
+
+        return;
+    }
+
+    item.qty =
+        Number(item.qty) + qty;
+
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "borrowHistory"
+            )
+        ) || [];
+
+    history.push({
+
+        type: "RETURN",
+
+        date:
+        new Date()
+            .toLocaleString(),
+
+        pn: item.pn,
+
+        lot: item.lot,
+
+        qty: qty,
+
+        user: user
+
+    });
+
+    localStorage.setItem(
+        "borrowHistory",
+        JSON.stringify(history)
+    );
+
+    displayData();
+
+    alert("✅ คืนสินค้าเรียบร้อย");
+}
+function exportReport() {
+
+    const data = getStock();
+
+    let csv =
+        "PN,Lot,Date,Qty,Location\n";
+
+    data.forEach(item => {
+
+        csv +=
+            item.pn + "," +
+            item.lot + "," +
+            item.date + "," +
+            item.qty + "," +
+            item.location +
+            "\n";
+
+    });
+
+    const blob =
+        new Blob(
+            [csv],
+            {
+                type:
+                "text/csv;charset=utf-8;"
+            }
+        );
+
+    const link =
+        document.createElement("a");
+
+    link.href =
+        URL.createObjectURL(blob);
+
+    link.download =
+        "Stock_Report.csv";
+
+    link.click();
+
+}
+function exportHistory() {
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "borrowHistory"
+            )
+        ) || [];
+
+    let csv =
+        "Date,Type,PN,Lot,Qty,User\n";
+
+    history.forEach(item => {
+
+        csv +=
+            item.date + "," +
+            item.type + "," +
+            item.pn + "," +
+            item.lot + "," +
+            item.qty + "," +
+            item.user +
+            "\n";
+
+    });
+
+    const blob =
+        new Blob(
+            [csv],
+            {
+                type:
+                "text/csv;charset=utf-8;"
+            }
+        );
+
+    const link =
+        document.createElement("a");
+
+    link.href =
+        URL.createObjectURL(blob);
+
+    link.download =
+        "Borrow_History.csv";
+
+    link.click();
+
+}
+      
 window.onload = function(){
 
     const user =
