@@ -38,7 +38,27 @@ body{
     margin-bottom:15px;
     box-shadow:0 2px 5px rgba(0,0,0,.1);
 }
+.table-container{
 
+    display:flex;
+
+    gap:20px;
+
+    align-items:flex-start;
+
+}
+
+.stock-card{
+
+    flex:2;
+
+}
+
+.history-card{
+
+    flex:1;
+
+}
 input{
     padding:8px;
     margin:5px;
@@ -330,7 +350,9 @@ class="hidden"
 
 </div>
 
-<div class="card">
+<div class="table-container">
+
+    <div class="card stock-card">
 
 <table>
 
@@ -353,7 +375,10 @@ class="hidden"
 </tbody>
 
 </table>
-<div class="card">
+          
+ </div>    
+      
+<div class="card history-card">
 
     <h3>📋 ประวัติการเบิก/คืน</h3>
 
@@ -376,8 +401,6 @@ class="hidden"
 
     </table>
 
-</div>
-</div>
 
 </div>
 
