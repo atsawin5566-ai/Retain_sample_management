@@ -218,7 +218,17 @@ class="hidden"
 
     </div>
 
+<div class="box expired">
+
+    <h3>Out Of Stock</h3>
+
+    <h1 id="outOfStockCount">
+        0
+    </h1>
+
 </div>
+      
+
  <div class="card">
 
     <h3>📤 เบิกสินค้า</h3>
@@ -669,6 +679,10 @@ body.innerHTML += `
         "expiredCount"
     )
     .innerText = expired;
+
+    document.getElementById(
+    "outOfStockCount"
+   ).innerText = outOfStock;  
 
 }
 function editItem(index) {
