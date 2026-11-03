@@ -287,17 +287,17 @@ class="hidden"
 
     <table>
 
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>PN</th>
-                <th>Lot</th>
-                <th>Qty</th>
-                <th>User</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+<thead>
+    <tr>
+        <th>No.</th>
+        <th>Date</th>
+        <th>Type</th>
+        <th>PN</th>
+        <th>Lot</th>
+        <th>Qty</th>
+        <th>User</th>
+    </tr>
+</thead>
 
         <tbody id="historyTable">
         </tbody>
@@ -1217,27 +1217,43 @@ function displayHistory() {
 
     table.innerHTML = "";
 
-    history.forEach((item,index) => {
+const latestHistory =
+    history
+        .slice(-10)
+        .reverse();
 
-        table.innerHTML += `
-        <tr>
-            <td>${item.date}</td>
-            <td>${item.type}</td>
-            <td>${item.pn}</td>
-            <td>${item.lot}</td>
-            <td>${item.qty}</td>
-            <td>${item.user}</td>
+latestHistory.forEach((item,index) => {
 
-            <td>
-                <button
-                    onclick="deleteHistory(${index})">
-                    ลบ
-                </button>
-            </td>
+    let rowColor = "";
 
-        </tr>
-        `;
-    });
+    if(item.type === "BORROW"){
+
+        rowColor = "#ffe5e5";
+
+    }else if(item.type === "RETURN"){
+
+        rowColor = "#e5ffe5";
+
+    }
+
+    table.innerHTML += `
+    <tr style="background:${rowColor}">
+        <td>${index + 1}</td>
+        <td>${item.date}</td>
+        <td>
+    ${
+        item.type === "BORROW"
+        ? "🔴 BORROW"
+        : "🟢 RETURN"
+    }
+</td>
+        <td>${item.pn}</td>
+        <td>${item.lot}</td>
+        <td>${item.qty}</td>
+        <td>${item.user}</td>
+    </tr>
+    `;
+});
 
 }
 function deleteHistory(index){
