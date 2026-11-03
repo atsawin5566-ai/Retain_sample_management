@@ -184,6 +184,7 @@ class="hidden"
 </div>
 
 <div class="dashboard">
+      
 
     <div class="box normal">
 
@@ -194,7 +195,31 @@ class="hidden"
         </h1>
 
           
-<div class="card">
+          
+    </div>
+
+    <div class="box warning">
+
+        <h3>Near Expiry</h3>
+
+        <h1 id="warningCount">
+            0
+        </h1>
+
+    </div>
+
+    <div class="box expired">
+
+        <h3>Expired</h3>
+
+        <h1 id="expiredCount">
+            0
+        </h1>
+
+    </div>
+
+</div>
+ <div class="card">
 
     <h3>📤 เบิกสินค้า</h3>
 
@@ -245,30 +270,7 @@ class="hidden"
     </button>
 
 </div>
-          
-    </div>
-
-    <div class="box warning">
-
-        <h3>Near Expiry</h3>
-
-        <h1 id="warningCount">
-            0
-        </h1>
-
-    </div>
-
-    <div class="box expired">
-
-        <h3>Expired</h3>
-
-        <h1 id="expiredCount">
-            0
-        </h1>
-
-    </div>
-
-</div>
+     
 
 <div id="alertArea"></div>
 
@@ -330,6 +332,7 @@ class="hidden"
 <th>Qty</th>
 <th>Location</th>
 <th>Status</th>
+<th>Action</th>     
 </tr>
 
 </thead>
@@ -632,6 +635,7 @@ body.innerHTML += `
     <td>${status}</td>
 
     <td>${actionButton}</td>
+    
 
 </tr>
 
@@ -1061,7 +1065,15 @@ function exportHistory() {
     link.click();
 
 }
-      
+ function clearForm() {
+
+    document.getElementById("pn").value = "";
+    document.getElementById("lot").value = "";
+    document.getElementById("storeDate").value = "";
+    document.getElementById("qty").value = "";
+    document.getElementById("location").value = "";
+
+}     
 window.onload = function(){
 
     const user =
