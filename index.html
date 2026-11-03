@@ -597,7 +597,125 @@ body.innerHTML += `
     .innerText = expired;
 
 }
+function editItem(index) {
 
+    const data = getStock();
+
+    const item = data[index];
+
+    document.getElementById("pn").value =
+        item.pn;
+
+    document.getElementById("lot").value =
+        item.lot;
+
+    document.getElementById("storeDate").value =
+        item.date;
+
+    document.getElementById("qty").value =
+        item.qty;
+
+    document.getElementById("location").value =
+        item.location;
+
+    editIndex = index;
+
+    document.getElementById("saveBtn")
+        .style.display = "none";
+
+    document.getElementById("updateBtn")
+        .style.display = "inline-block";
+}
+function updateItem() {
+
+    const data = getStock();
+
+    const lot =
+        document.getElementById("lot")
+        .value
+        .trim();
+
+    const duplicateLot =
+        data.find(
+            (item,index)=>
+
+                item.lot &&
+                item.lot.trim().toLowerCase()
+                ===
+                lot.toLowerCase()
+
+                &&
+
+                index !== editIndex
+        );
+
+    if(duplicateLot){
+
+        alert(
+            "❌ Lot นี้มีอยู่แล้ว"
+        );
+
+        return;
+    }
+
+    data[editIndex] = {
+
+        pn:
+        document.getElementById("pn").value,
+
+        lot:
+        document.getElementById("lot").value,
+
+        date:
+        document.getElementById("storeDate").value,
+
+        qty:
+        document.getElementById("qty").value,
+
+        location:
+        document.getElementById("location").value
+
+    };
+
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
+
+    editIndex = -1;
+
+    displayData();
+
+    document.getElementById("saveBtn")
+        .style.display = "inline-block";
+
+    document.getElementById("updateBtn")
+        .style.display = "none";
+
+    alert("✅ อัปเดตสำเร็จ");
+}
+function deleteItem(index){
+
+    if(
+        !confirm(
+            "ยืนยันการลบข้อมูล ?"
+        )
+    ){
+        return;
+    }
+
+    const data = getStock();
+
+    data.splice(index,1);
+
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
+
+    displayData();
+}
+      
 function searchItem(){
 
     const keyword =
@@ -628,7 +746,15 @@ function searchItem(){
     displayData(result);
 
 }
+function getCurrentUser() {
 
+    return JSON.parse(
+        localStorage.getItem(
+            "currentUser"
+        )
+    );
+
+}
 window.onload = function(){
 
     const user =
