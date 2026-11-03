@@ -900,22 +900,6 @@ function borrowItem() {
 item.qty =
     Number(item.qty) - qty;
 
-// ถ้าเบิกจนเหลือ 0 ให้ลบ Lot ออกจาก Stock
-
-if (item.qty <= 0) {
-
-    const index =
-        data.findIndex(
-            x => x.lot === lot
-        );
-
-    if (index !== -1) {
-
-        data.splice(index, 1);
-
-    }
-
-}
 
 localStorage.setItem(
     "stockData",
