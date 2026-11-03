@@ -374,6 +374,7 @@ class="hidden"
     <button onclick="borrowItem()">
         เบิกสินค้าทั้งหมด
     </button>
+       
 <div class="card">
 
     <h3>📄 ใบเบิกสินค้า</h3>
@@ -1768,12 +1769,12 @@ function removeReturnItem(index){
 }
 function printBorrowDocument() {
 
-    const doc =
+    const documentArea =
         document.getElementById(
             "borrowDocument"
         );
 
-    if (!doc) {
+    if (!documentArea) {
 
         alert("ไม่พบข้อมูลใบเบิก");
 
@@ -1784,7 +1785,7 @@ function printBorrowDocument() {
         window.open(
             "",
             "_blank",
-            "width=900,height=700"
+            "width=1000,height=700"
         );
 
     printWindow.document.write(`
@@ -1814,17 +1815,22 @@ function printBorrowDocument() {
         <body>
 
             <h2>
-                Solstice Technologies
-                (Thailand) Co., Ltd.
+                SOLSTICE TECHNOLOGIES (THAILAND) CO., LTD.
             </h2>
 
-            ${doc.innerHTML}
+            <h3>
+                ใบเบิกสินค้า
+            </h3>
+
+            ${documentArea.innerHTML}
 
         </body>
         </html>
     `);
 
     printWindow.document.close();
+
+    printWindow.focus();
 
     setTimeout(() => {
 
