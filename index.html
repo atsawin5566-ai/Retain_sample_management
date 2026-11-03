@@ -1071,7 +1071,185 @@ function getCurrentUser() {
     );
 
 }
-borrowItem()
+function borrowItem() {
+
+    const user =
+        document.getElementById(
+            "borrowBy"
+        ).value.trim();
+
+    if (borrowList.length === 0) {
+
+        alert(
+            "กรุณาเพิ่มรายการก่อน"
+        );
+
+        return;
+    }
+
+    let data = getStock();
+
+    // ตรวจสอบ Stock ทุก Lot ก่อน
+
+    for (const row of borrowList) {
+
+        const item =
+            data.find(
+                x => x.lot === row.lot
+            );
+
+        if (!item) {
+
+            alert(
+                "❌ ไม่พบ Lot : " +
+                row.lot
+            );
+
+            return;
+        }
+
+        if (
+            Number(row.qty) >
+            Number(item.qty)
+        ) {
+
+            alert(
+                "❌ จำนวนคงเหลือไม่พอ : " +
+                row.lot +
+                "\nคงเหลือ : " +
+                item.qty
+            );
+
+            return;
+        }
+
+    }
+
+    // ตัด Stock ทุก Lot
+
+    borrowList.forEach(row => {
+
+        const item =
+            data.find(
+                x => x.lot === row.lot
+            );
+
+        item.qty =
+            Number(item.qty)
+            -
+            Number(row.qty);
+
+    });
+
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
+
+    // บันทึกประวัติ
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "borrowHistory"
+            )
+        ) || [];
+
+    borrowList.forEach(row => {
+
+        const item =
+            data.find(
+                x => x.lot === row.lot
+            );
+
+        history.push({
+
+            transactionId:
+                "BOR-" + Date.now(),
+
+            type: "BORROW",
+
+            date:
+                new Date()
+                .toLocaleString(),
+
+            pn: item.pn,
+
+            lot: row.lot,
+
+            qty: row.qty,
+
+            user: user
+
+        });
+
+    });
+
+    localStorage.setItem(
+        "borrowHistory",
+        JSON.stringify(history)
+    );
+
+    // สร้างข้อมูลใบเบิก
+
+    document.getElementById(
+        "docNo"
+    ).innerText =
+        "BOR-" + Date.now();
+
+    document.getElementById(
+        "docDate"
+    ).innerText =
+        new Date().toLocaleString();
+
+    document.getElementById(
+        "docUser"
+    ).innerText =
+        user;
+
+    const printTableBody =
+        document.getElementById(
+            "printTableBody"
+        );
+
+    if (printTableBody) {
+
+        printTableBody.innerHTML = "";
+
+        borrowList.forEach(
+            (row,index)=>{
+
+                printTableBody.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${row.lot}</td>
+                    <td>${row.qty}</td>
+                </tr>
+                `;
+
+            }
+        );
+
+    }
+
+    displayData();
+    displayHistory();
+
+    // ล้างรายการเบิกทั้งหมด
+
+    borrowList = [];
+
+    renderBorrowList();
+
+    document.getElementById(
+        "borrowBy"
+    ).value = "";
+
+    alert(
+        "✅ เบิกสินค้าทั้งหมดสำเร็จ"
+    );
+
+}
 function returnItem() {
 
     const lot =
