@@ -452,7 +452,7 @@ class="hidden"
 </div>
        
 </div>
-          <div class="card">
+         <div class="card">
 
     <h3>📥 คืนสินค้า</h3>
 
@@ -472,8 +472,29 @@ class="hidden"
         placeholder="ผู้คืน"
     >
 
+    <button onclick="addReturnLot()">
+        เพิ่มรายการ
+    </button>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Lot</th>
+                <th>Qty</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="returnListBody">
+        </tbody>
+
+    </table>
+
+    <br>
+
     <button onclick="returnItem()">
-        คืนสินค้า
+        คืนสินค้าทั้งหมด
     </button>
 
 </div>
@@ -612,6 +633,7 @@ const users = [
       
 let editIndex = -1;
 let borrowList = [];
+let returnList = [];
       
 /* LOGIN */
 
@@ -1252,56 +1274,21 @@ function borrowItem() {
 }
 function returnItem() {
 
-    const lot =
-        document.getElementById(
-            "returnLot"
-        ).value.trim();
-
-    const qty =
-        Number(
-            document.getElementById(
-                "returnQty"
-            ).value
-        );
-
     const user =
         document.getElementById(
             "returnBy"
         ).value.trim();
 
-    const data =
-        getStock();
+    if(returnList.length === 0){
 
-    const item =
-        data.find(
-            x => x.lot === lot
+        alert(
+            "กรุณาเพิ่มรายการคืนก่อน"
         );
 
-    if (!item) {
-
-        alert("❌ ไม่พบ Lot");
-
         return;
     }
 
-    if (qty <= 0) {
-
-        alert("กรุณาระบุจำนวนให้ถูกต้อง");
-
-        return;
-    }
-
-    // เพิ่ม Stock กลับ
-
-    item.qty =
-        Number(item.qty) + qty;
-
-    localStorage.setItem(
-        "stockData",
-        JSON.stringify(data)
-    );
-
-    // เก็บประวัติ
+    let data = getStock();
 
     let history =
         JSON.parse(
@@ -1310,44 +1297,75 @@ function returnItem() {
             )
         ) || [];
 
-    history.push({
+    returnList.forEach(row => {
 
-        transactionId:
-            "RET-" + Date.now(),
+        const item =
+            data.find(
+                x => x.lot === row.lot
+            );
 
-        type: "RETURN",
+        if(item){
 
-        date:
-            new Date()
-            .toLocaleString(),
+            item.qty =
+                Number(item.qty)
+                +
+                Number(row.qty);
 
-        pn: item.pn,
+        }
 
-        lot: item.lot,
+        history.push({
 
-        qty: qty,
+            transactionId:
+                "RET-" + Date.now(),
 
-        user: user
+            type: "RETURN",
+
+            date:
+                new Date()
+                    .toLocaleString(),
+
+            pn:
+                item ? item.pn : "",
+
+            lot:
+                row.lot,
+
+            qty:
+                row.qty,
+
+            user:
+                user
+
+        });
 
     });
+
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
 
     localStorage.setItem(
         "borrowHistory",
         JSON.stringify(history)
     );
 
-   displayData();
-   displayHistory();
-      
-clearReturnForm();
+    displayData();
+    displayHistory();
 
-alert(
-    "✅ คืนสินค้าเรียบร้อย\nคงเหลือ "
-    + item.qty
-);
+    returnList = [];
+
+    renderReturnList();
+
+    document.getElementById(
+        "returnBy"
+    ).value = "";
+
+    alert(
+        "✅ คืนสินค้าทั้งหมดเรียบร้อย"
+    );
 
 }
-
 function exportReport() {
 
     const data = getStock();
@@ -1655,6 +1673,100 @@ function removeBorrowItem(index){
     renderBorrowList();
 
 }
+function addReturnLot(){
+
+    const lot =
+        document.getElementById(
+            "returnLot"
+        ).value.trim();
+
+    const qty =
+        Number(
+            document.getElementById(
+                "returnQty"
+            ).value
+        );
+
+    if(!lot || qty <= 0){
+
+        alert(
+            "กรุณากรอก Lot และ Qty"
+        );
+
+        return;
+    }
+
+    const duplicate =
+        returnList.find(
+            item => item.lot === lot
+        );
+
+    if(duplicate){
+
+        alert(
+            "Lot นี้อยู่ในรายการคืนแล้ว"
+        );
+
+        return;
+    }
+
+    returnList.push({
+
+        lot: lot,
+        qty: qty
+
+    });
+
+    renderReturnList();
+
+    document.getElementById(
+        "returnLot"
+    ).value = "";
+
+    document.getElementById(
+        "returnQty"
+    ).value = "";
+
+}
+function renderReturnList(){
+
+    const body =
+        document.getElementById(
+            "returnListBody"
+        );
+
+    body.innerHTML = "";
+
+    returnList.forEach((item,index)=>{
+
+        body.innerHTML += `
+        <tr>
+
+            <td>${item.lot}</td>
+
+            <td>${item.qty}</td>
+
+            <td>
+                <button
+                    onclick="removeReturnItem(${index})">
+                    ลบ
+                </button>
+            </td>
+
+        </tr>
+        `;
+
+    });
+
+}
+function removeReturnItem(index){
+
+    returnList.splice(index,1);
+
+    renderReturnList();
+
+}
+
       
 window.onload = function(){
 
