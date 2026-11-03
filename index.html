@@ -524,17 +524,16 @@ function saveItem() {
         location
     });
 
-    localStorage.setItem(
-        "stockData",
-        JSON.stringify(data)
-    );
+   localStorage.setItem(
+    "stockData",
+    JSON.stringify(data)
+);
 
-    clearForm();
+displayData();
 
-    // โหลดข้อมูลใหม่จาก LocalStorage
-    displayData(getStock());
+clearForm();
 
-    alert("✅ บันทึกสำเร็จ");
+alert("✅ บันทึกสำเร็จ");
 }
 
 function displayData(dataList=null){
@@ -943,10 +942,12 @@ localStorage.setItem(
 
     displayData();
 
-    alert(
-        "✅ เบิกสำเร็จ\nคงเหลือ "
-        + item.qty
-    );
+clearBorrowForm();
+
+alert(
+    "✅ เบิกสำเร็จ\nคงเหลือ "
+    + item.qty
+);
 
 }
 function returnItem() {
@@ -1035,12 +1036,14 @@ function returnItem() {
         JSON.stringify(history)
     );
 
-    displayData();
+   displayData();
 
-    alert(
-        "✅ คืนสินค้าเรียบร้อย\nคงเหลือ "
-        + item.qty
-    );
+clearReturnForm();
+
+alert(
+    "✅ คืนสินค้าเรียบร้อย\nคงเหลือ "
+    + item.qty
+);
 
 }
 
@@ -1138,7 +1141,37 @@ function exportHistory() {
     document.getElementById("qty").value = "";
     document.getElementById("location").value = "";
 
-}     
+}   
+function clearBorrowForm() {
+
+    document.getElementById(
+        "borrowLot"
+    ).value = "";
+
+    document.getElementById(
+        "borrowQty"
+    ).value = "";
+
+    document.getElementById(
+        "borrowBy"
+    ).value = "";
+
+} 
+function clearReturnForm() {
+
+    document.getElementById(
+        "returnLot"
+    ).value = "";
+
+    document.getElementById(
+        "returnQty"
+    ).value = "";
+
+    document.getElementById(
+        "returnBy"
+    ).value = "";
+
+}      
 window.onload = function(){
 
     const user =
