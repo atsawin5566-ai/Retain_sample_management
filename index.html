@@ -172,7 +172,15 @@ class="hidden"
     <button onclick="logout()">
         Logout
     </button>
+      
+<button onclick="exportReport()">
+    Export Stock
+</button>
 
+<button onclick="exportHistory()">
+    Export History
+</button>
+      
 </div>
 
 <div class="dashboard">
@@ -184,7 +192,31 @@ class="hidden"
         <h1 id="normalCount">
             0
         </h1>
+<div class="card">
 
+    <h3>📤 เบิกสินค้า</h3>
+
+    <input
+        id="borrowLot"
+        placeholder="Lot No"
+    >
+
+    <input
+        id="borrowQty"
+        type="number"
+        placeholder="จำนวน"
+    >
+
+    <input
+        id="borrowBy"
+        placeholder="ผู้เบิก"
+    >
+
+    <button onclick="borrowItem()">
+        เบิกสินค้า
+    </button>
+
+</div>
     </div>
 
     <div class="box warning">
