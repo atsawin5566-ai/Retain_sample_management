@@ -281,7 +281,31 @@ class="hidden"
 
 </div>
      
+<div class="card">
 
+    <h3>📋 ประวัติการเบิก/คืน</h3>
+
+    <table>
+
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>PN</th>
+                <th>Lot</th>
+                <th>Qty</th>
+                <th>User</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="historyTable">
+        </tbody>
+
+    </table>
+
+</div>
+      
 <div id="alertArea"></div>
 
 <div class="card">
@@ -942,6 +966,7 @@ localStorage.setItem(
     );
 
     displayData();
+    displayHistory();
 
 clearBorrowForm();
 
@@ -1038,7 +1063,8 @@ function returnItem() {
     );
 
    displayData();
-
+   displayHistory();
+      
 clearReturnForm();
 
 alert(
@@ -1172,7 +1198,76 @@ function clearReturnForm() {
         "returnBy"
     ).value = "";
 
-}      
+}  
+function displayHistory() {
+
+    const history =
+        JSON.parse(
+            localStorage.getItem(
+                "borrowHistory"
+            )
+        ) || [];
+
+    const table =
+        document.getElementById(
+            "historyTable"
+        );
+
+    if (!table) return;
+
+    table.innerHTML = "";
+
+    history.forEach((item,index) => {
+
+        table.innerHTML += `
+        <tr>
+            <td>${item.date}</td>
+            <td>${item.type}</td>
+            <td>${item.pn}</td>
+            <td>${item.lot}</td>
+            <td>${item.qty}</td>
+            <td>${item.user}</td>
+
+            <td>
+                <button
+                    onclick="deleteHistory(${index})">
+                    ลบ
+                </button>
+            </td>
+
+        </tr>
+        `;
+    });
+
+}
+function deleteHistory(index){
+
+    let history =
+        JSON.parse(
+            localStorage.getItem(
+                "borrowHistory"
+            )
+        ) || [];
+
+    if(
+        !confirm(
+            "ต้องการลบรายการนี้หรือไม่?"
+        )
+    ){
+        return;
+    }
+
+    history.splice(index,1);
+
+    localStorage.setItem(
+        "borrowHistory",
+        JSON.stringify(history)
+    );
+
+    displayHistory();
+
+}
+      
 window.onload = function(){
 
     const user =
@@ -1183,6 +1278,7 @@ window.onload = function(){
     if(user){
 
         showMain();
+        displayHistory();  
 
     }
       
