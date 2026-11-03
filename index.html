@@ -1456,13 +1456,23 @@ function addBorrowLot(){
 
     borrowList.push({
 
-        lot: lot,
+    lot: lot,
 
-        qty: qty
+    qty: qty
 
-    });
+});
 
-    renderBorrowList();
+renderBorrowList();
+
+/* ล้างช่องกรอก */
+
+document.getElementById(
+    "borrowLot"
+).value = "";
+
+document.getElementById(
+    "borrowQty"
+).value = "";
 
 }
 function renderBorrowList(){
