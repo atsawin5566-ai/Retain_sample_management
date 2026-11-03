@@ -352,32 +352,106 @@ class="hidden"
         placeholder="ผู้เบิก"
     >
 <button onclick="addBorrowLot()">
-        เพิ่มรายการ
-    </button>
+    เพิ่มรายการ
+</button>
 
-    <table id="borrowListTable">
+<table>
 
-        <thead>
-            <tr>
-                <th>Lot</th>
-                <th>Qty</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+    <thead>
+        <tr>
+            <th>Lot</th>
+            <th>Qty</th>
+            <th>Action</th>
+        </tr>
+    </thead>
 
-        <tbody id="borrowListBody">
-        </tbody>
+    <tbody id="borrowListBody">
+    </tbody>
 
-    </table>
+</table>
 
-    <br>
 
     <button onclick="borrowItem()">
         เบิกสินค้าทั้งหมด
     </button>
+<div class="card">
+
+    <h3>📄 ใบเบิกสินค้า</h3>
+
+    <div id="borrowDocument">
+
+        <p>
+            เลขที่เอกสาร :
+            <span id="docNo"></span>
+        </p>
+
+        <p>
+            วันที่ :
+            <span id="docDate"></span>
+        </p>
+
+        <p>
+            ผู้เบิก :
+            <span id="docUser"></span>
+        </p>
+
+        <table
+            id="printTable"
+            style="width:100%;border-collapse:collapse;"
+        >
+
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Lot</th>
+                    <th>Qty</th>
+                </tr>
+            </thead>
+
+            <tbody id="printTableBody">
+            </tbody>
+
+        </table>
+
+        <br><br>
+
+        <table
+            style="width:100%;border:none;"
+        >
+            <tr>
+
+                <td>
+                    ผู้เบิก
+                    <br><br><br>
+                    ____________________
+                </td>
+
+                <td>
+                    ผู้จ่าย
+                    <br><br><br>
+                    ____________________
+                </td>
+
+                <td>
+                    ผู้อนุมัติ
+                    <br><br><br>
+                    ____________________
+                </td>
+
+            </tr>
+        </table>
+
+    </div>
+
+    <button
+        onclick="printBorrowDocument()"
+    >
+        🖨️ พิมพ์ใบเบิก
+    </button>
 
 </div>
-
+       
+</div>
           <div class="card">
 
     <h3>📥 คืนสินค้า</h3>
@@ -1456,23 +1530,21 @@ function addBorrowLot(){
 
     borrowList.push({
 
-    lot: lot,
+        lot: lot,
 
-    qty: qty
+        qty: qty
 
-});
+    });
 
-renderBorrowList();
+    renderBorrowList();
 
-/* ล้างช่องกรอก */
+    document.getElementById(
+        "borrowLot"
+    ).value = "";
 
-document.getElementById(
-    "borrowLot"
-).value = "";
-
-document.getElementById(
-    "borrowQty"
-).value = "";
+    document.getElementById(
+        "borrowQty"
+    ).value = "";
 
 }
 function renderBorrowList(){
