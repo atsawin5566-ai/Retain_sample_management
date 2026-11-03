@@ -393,6 +393,7 @@ class="hidden"
         <th>Lot</th>
         <th>Qty</th>
         <th>User</th>
+        <th>Action</th>
     </tr>
 </thead>
 
@@ -1260,22 +1261,29 @@ latestHistory.forEach((item,index) => {
     }
 
     table.innerHTML += `
-    <tr style="background:${rowColor}">
-        <td>${index + 1}</td>
-        <td>${item.date}</td>
-        <td>
-    ${
-        item.type === "BORROW"
-        ? "🔴 BORROW"
-        : "🟢 RETURN"
-    }
-</td>
-        <td>${item.pn}</td>
-        <td>${item.lot}</td>
-        <td>${item.qty}</td>
-        <td>${item.user}</td>
-    </tr>
-    `;
+<tr style="background:${rowColor}">
+    <td>${index + 1}</td>
+    <td>${item.date}</td>
+    <td>
+        ${
+            item.type === "BORROW"
+            ? "🔴 BORROW"
+            : "🟢 RETURN"
+        }
+    </td>
+    <td>${item.pn}</td>
+    <td>${item.lot}</td>
+    <td>${item.qty}</td>
+    <td>${item.user}</td>
+
+    <td>
+        <button
+            onclick="deleteHistory(${index})">
+            ลบ
+        </button>
+    </td>
+</tr>
+`;
 });
 
 }
@@ -1288,9 +1296,22 @@ function deleteHistory(index){
             )
         ) || [];
 
+    const currentUser =
+        getCurrentUser();
+
+    if(
+        !currentUser ||
+        currentUser.role !== "Admin"
+    ){
+        alert(
+            "❌ เฉพาะ Admin เท่านั้น"
+        );
+        return;
+    }
+
     if(
         !confirm(
-            "ต้องการลบรายการนี้หรือไม่?"
+            "ยืนยันการลบประวัติ ?"
         )
     ){
         return;
