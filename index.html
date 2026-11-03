@@ -524,16 +524,17 @@ function saveItem() {
         location
     });
 
-   localStorage.setItem(
-    "stockData",
-    JSON.stringify(data)
-);
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
 
-displayData();
+    clearForm();
 
-clearForm();
+    // โหลดข้อมูลใหม่จาก LocalStorage
+    displayData(getStock());
 
-alert("✅ บันทึกสำเร็จ");
+    alert("✅ บันทึกสำเร็จ");
 }
 
 function displayData(dataList=null){
@@ -572,32 +573,25 @@ function displayData(dataList=null){
 
         }
 
-        let status = "✅";
+        let status="✅";
 
-if (Number(item.qty) <= 0) {
+        if(age>=365){
 
-    status = "❌ Out of Stock";
+            status="❌ Expired";
 
-}
-else if (age >= 365) {
+            expired++;
 
-    status = "❌ Expired";
+        }else if(age>=335){
 
-    expired++;
+            status="⚠️ Near Expiry";
 
-}
-else if (age >= 335) {
+            warning++;
 
-    status = "⚠️ Near Expiry";
+        }else{
 
-    warning++;
+            normal++;
 
-}
-else {
-
-    normal++;
-
-}
+        }
 
        let actionButton = "";
 
@@ -856,14 +850,7 @@ function borrowItem() {
 
     if (!item) {
 
-        alert("❌ ไม่พบ Lot");
-
-        return;
-    }
-
-    if (qty <= 0) {
-
-        alert("กรุณาระบุจำนวนให้ถูกต้อง");
+        alert("ไม่พบ Lot");
 
         return;
     }
@@ -871,41 +858,19 @@ function borrowItem() {
     if (qty > Number(item.qty)) {
 
         alert(
-            "❌ จำนวนคงเหลือไม่พอ\n\nคงเหลือ: "
-            + item.qty
+            "จำนวนคงเหลือไม่พอ"
         );
 
         return;
     }
 
-    // ตัด Stock
+    item.qty =
+        Number(item.qty) - qty;
 
-item.qty =
-    Number(item.qty) - qty;
-
-// ถ้าเบิกจนเหลือ 0 ให้ลบ Lot ออกจาก Stock
-
-if (item.qty <= 0) {
-
-    const index =
-        data.findIndex(
-            x => x.lot === lot
-        );
-
-    if (index !== -1) {
-
-        data.splice(index, 1);
-
-    }
-
-}
-
-localStorage.setItem(
-    "stockData",
-    JSON.stringify(data)
-);
-
-    // เก็บประวัติ
+    localStorage.setItem(
+        "stockData",
+        JSON.stringify(data)
+    );
 
     let history =
         JSON.parse(
@@ -916,13 +881,10 @@ localStorage.setItem(
 
     history.push({
 
-        transactionId:
-            "BOR-" + Date.now(),
-
         type: "BORROW",
 
         date:
-            new Date()
+        new Date()
             .toLocaleString(),
 
         pn: item.pn,
@@ -942,13 +904,7 @@ localStorage.setItem(
 
     displayData();
 
-clearBorrowForm();
-
-alert(
-    "✅ เบิกสำเร็จ\nคงเหลือ "
-    + item.qty
-);
-
+    alert("✅ เบิกสำเร็จ");
 }
 function returnItem() {
 
@@ -969,8 +925,7 @@ function returnItem() {
             "returnBy"
         ).value.trim();
 
-    const data =
-        getStock();
+    const data = getStock();
 
     const item =
         data.find(
@@ -979,19 +934,10 @@ function returnItem() {
 
     if (!item) {
 
-        alert("❌ ไม่พบ Lot");
+        alert("ไม่พบ Lot");
 
         return;
     }
-
-    if (qty <= 0) {
-
-        alert("กรุณาระบุจำนวนให้ถูกต้อง");
-
-        return;
-    }
-
-    // เพิ่ม Stock กลับ
 
     item.qty =
         Number(item.qty) + qty;
@@ -1000,8 +946,6 @@ function returnItem() {
         "stockData",
         JSON.stringify(data)
     );
-
-    // เก็บประวัติ
 
     let history =
         JSON.parse(
@@ -1012,13 +956,10 @@ function returnItem() {
 
     history.push({
 
-        transactionId:
-            "RET-" + Date.now(),
-
         type: "RETURN",
 
         date:
-            new Date()
+        new Date()
             .toLocaleString(),
 
         pn: item.pn,
@@ -1036,17 +977,10 @@ function returnItem() {
         JSON.stringify(history)
     );
 
-   displayData();
+    displayData();
 
-clearReturnForm();
-
-alert(
-    "✅ คืนสินค้าเรียบร้อย\nคงเหลือ "
-    + item.qty
-);
-
+    alert("✅ คืนสินค้าเรียบร้อย");
 }
-
 function exportReport() {
 
     const data = getStock();
@@ -1141,37 +1075,7 @@ function exportHistory() {
     document.getElementById("qty").value = "";
     document.getElementById("location").value = "";
 
-}   
-function clearBorrowForm() {
-
-    document.getElementById(
-        "borrowLot"
-    ).value = "";
-
-    document.getElementById(
-        "borrowQty"
-    ).value = "";
-
-    document.getElementById(
-        "borrowBy"
-    ).value = "";
-
-} 
-function clearReturnForm() {
-
-    document.getElementById(
-        "returnLot"
-    ).value = "";
-
-    document.getElementById(
-        "returnQty"
-    ).value = "";
-
-    document.getElementById(
-        "returnBy"
-    ).value = "";
-
-}      
+}     
 window.onload = function(){
 
     const user =
