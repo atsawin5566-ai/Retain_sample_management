@@ -38,6 +38,7 @@ body{
     margin-bottom:15px;
     box-shadow:0 2px 5px rgba(0,0,0,.1);
 }
+      
 .table-container{
 
     display:flex;
@@ -48,17 +49,99 @@ body{
 
 }
 
+/* ตารางสต๊อก */
+
 .stock-card{
 
-    flex:2;
+    flex:3;
 
 }
+
+/* ตารางประวัติ */
 
 .history-card{
 
-    flex:1;
+    flex:2;
+
+    overflow-x:auto;
 
 }
+
+/* ตารางประวัติไม่ให้ตกบรรทัด */
+
+.history-card table{
+
+    width:100%;
+
+}
+
+.history-card th,
+.history-card td{
+
+    white-space:nowrap;
+
+    text-align:center;
+
+    padding:8px;
+
+}
+
+/* No. */
+
+.history-card th:nth-child(1),
+.history-card td:nth-child(1){
+    width:50px;
+}
+
+/* Date */
+
+.history-card th:nth-child(2),
+.history-card td:nth-child(2){
+    width:170px;
+}
+
+/* Type */
+
+.history-card th:nth-child(3),
+.history-card td:nth-child(3){
+    width:120px;
+}
+
+/* PN */
+
+.history-card th:nth-child(4),
+.history-card td:nth-child(4){
+    width:80px;
+}
+
+/* Lot */
+
+.history-card th:nth-child(5),
+.history-card td:nth-child(5){
+    width:100px;
+}
+
+/* Qty */
+
+.history-card th:nth-child(6),
+.history-card td:nth-child(6){
+    width:70px;
+}
+
+/* User */
+
+.history-card th:nth-child(7),
+.history-card td:nth-child(7){
+    width:100px;
+}
+
+/* Action */
+
+.history-card th:nth-child(8),
+.history-card td:nth-child(8){
+    width:80px;
+}
+
 input{
     padding:8px;
     margin:5px;
