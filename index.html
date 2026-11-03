@@ -551,6 +551,7 @@ function displayData(dataList=null){
     let normal=0;
     let warning=0;
     let expired=0;
+    let outOfStock = 0;
 
     data.forEach((item, index) => {
 
@@ -577,6 +578,8 @@ function displayData(dataList=null){
 if (Number(item.qty) <= 0) {
 
     status = "❌ Out of Stock";
+      
+    outOfStock++;  
 
 }
 else if (age >= 365) {
