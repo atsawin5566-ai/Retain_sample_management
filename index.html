@@ -573,25 +573,32 @@ function displayData(dataList=null){
 
         }
 
-        let status="✅";
+        let status = "✅";
 
-        if(age>=365){
+if (Number(item.qty) <= 0) {
 
-            status="❌ Expired";
+    status = "❌ Out of Stock";
 
-            expired++;
+}
+else if (age >= 365) {
 
-        }else if(age>=335){
+    status = "❌ Expired";
 
-            status="⚠️ Near Expiry";
+    expired++;
 
-            warning++;
+}
+else if (age >= 335) {
 
-        }else{
+    status = "⚠️ Near Expiry";
 
-            normal++;
+    warning++;
 
-        }
+}
+else {
+
+    normal++;
+
+}
 
        let actionButton = "";
 
