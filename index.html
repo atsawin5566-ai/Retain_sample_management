@@ -751,13 +751,15 @@ function updateItem() {
 
     displayData();
 
-    document.getElementById("saveBtn")
-        .style.display = "inline-block";
+clearForm();
 
-    document.getElementById("updateBtn")
-        .style.display = "none";
+document.getElementById("saveBtn")
+    .style.display = "inline-block";
 
-    alert("✅ อัปเดตสำเร็จ");
+document.getElementById("updateBtn")
+    .style.display = "none";
+
+alert("✅ อัปเดตสำเร็จ");
 }
 function deleteItem(index){
 
