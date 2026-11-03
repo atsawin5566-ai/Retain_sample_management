@@ -351,9 +351,29 @@ class="hidden"
         id="borrowBy"
         placeholder="ผู้เบิก"
     >
+<button onclick="addBorrowLot()">
+        เพิ่มรายการ
+    </button>
+
+    <table id="borrowListTable">
+
+        <thead>
+            <tr>
+                <th>Lot</th>
+                <th>Qty</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody id="borrowListBody">
+        </tbody>
+
+    </table>
+
+    <br>
 
     <button onclick="borrowItem()">
-        เบิกสินค้า
+        เบิกสินค้าทั้งหมด
     </button>
 
 </div>
@@ -517,6 +537,7 @@ const users = [
 ];
       
 let editIndex = -1;
+let borrowList = [];
       
 /* LOGIN */
 
@@ -1408,6 +1429,76 @@ function deleteHistory(index){
     );
 
     displayHistory();
+
+}
+function addBorrowLot(){
+
+    const lot =
+        document.getElementById(
+            "borrowLot"
+        ).value.trim();
+
+    const qty =
+        Number(
+            document.getElementById(
+                "borrowQty"
+            ).value
+        );
+
+    if(!lot || qty <= 0){
+
+        alert(
+            "กรุณากรอก Lot และ Qty"
+        );
+
+        return;
+    }
+
+    borrowList.push({
+
+        lot: lot,
+
+        qty: qty
+
+    });
+
+    renderBorrowList();
+
+}
+function renderBorrowList(){
+
+    const body =
+        document.getElementById(
+            "borrowListBody"
+        );
+
+    body.innerHTML = "";
+
+    borrowList.forEach((item,index)=>{
+
+        body.innerHTML += `
+        <tr>
+            <td>${item.lot}</td>
+
+            <td>${item.qty}</td>
+
+            <td>
+                <button
+                    onclick="removeBorrowItem(${index})">
+                    ลบ
+                </button>
+            </td>
+        </tr>
+        `;
+
+    });
+
+}
+function removeBorrowItem(index){
+
+    borrowList.splice(index,1);
+
+    renderBorrowList();
 
 }
       
