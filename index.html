@@ -968,6 +968,9 @@ function editItem(index) {
     document.getElementById("qty").value =
         item.qty;
 
+      document.getElementById("type").value =
+        item.type;
+
     document.getElementById("location").value =
         item.location;
 
@@ -1024,6 +1027,9 @@ function updateItem() {
 
         qty:
         document.getElementById("qty").value,
+
+        type:
+        document.getElementById("type").value,
 
         location:
         document.getElementById("location").value
@@ -1218,6 +1224,8 @@ function borrowItem() {
 
             qty: row.qty,
 
+            type: row.type,
+
             user: user
 
         });
@@ -1263,6 +1271,8 @@ function borrowItem() {
                     <td>${index + 1}</td>
                     <td>${row.lot}</td>
                     <td>${row.qty}</td>
+                    <td>${row.type}</td>
+                    <td>${row.location}</td>
                 </tr>
                 `;
 
@@ -1397,6 +1407,7 @@ function exportReport() {
             item.lot + "," +
             item.date + "," +
             item.qty + "," +
+            item.type + "," +
             item.location +
             "\n";
 
@@ -1443,6 +1454,7 @@ function exportHistory() {
             item.pn + "," +
             item.lot + "," +
             item.qty + "," +
+            item.type + "," +
             item.user +
             "\n";
 
@@ -1475,7 +1487,7 @@ function exportHistory() {
     document.getElementById("lot").value = "";
     document.getElementById("storeDate").value = "";
     document.getElementById("qty").value = "";
-    document.getElementById("Type").value = "";   
+    document.getElementById("type").value = "";   
     document.getElementById("location").value = "";
 
 }   
@@ -1560,6 +1572,7 @@ latestHistory.forEach((item,index) => {
     <td>${item.pn}</td>
     <td>${item.lot}</td>
     <td>${item.qty}</td>
+    <td>${item.type}</td>
     <td>${item.user}</td>
 
     <td>
