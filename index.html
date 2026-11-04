@@ -1036,6 +1036,9 @@ function updateItem() {
         location:
         document.getElementById("location").value
 
+        materialType:
+        document.getElementById("materialType").value
+
     };
 
     localStorage.setItem(
@@ -1395,19 +1398,19 @@ function exportReport() {
 
     const data = getStock();
 
-    let csv =
-        "PN,Lot,Date,Qty,Location\n";
+   let csv =
+    "PN,Lot,Date,Qty,Location,Material Type\n";
 
     data.forEach(item => {
 
         csv +=
-            item.pn + "," +
-            item.lot + "," +
-            item.date + "," +
-            item.qty + "," +
-            item.mateialType + "," +
-            item.location +
-            "\n";
+    item.pn + "," +
+    item.lot + "," +
+    item.date + "," +
+    item.qty + "," +
+    item.location + "," +
+    (item.materialType || "") +
+    "\n";
 
     });
 
