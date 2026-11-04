@@ -1651,10 +1651,24 @@ function addBorrowLot(){
         return;
     }
 
+    const stockItem =
+        getStock().find(
+            x => x.lot === lot
+        );
+
+    if(!stockItem){
+
+        alert(
+            "ไม่พบ Lot : " + lot
+        );
+
+        return;
+    }
+
     borrowList.push({
 
         lot: lot,
-        location: stockItem.location, 
+        location: stockItem.location || "",
         qty: qty
 
     });
@@ -1668,7 +1682,6 @@ function addBorrowLot(){
     document.getElementById(
         "borrowQty"
     ).value = "";
-
 }
 function renderBorrowList(){
 
@@ -1683,11 +1696,10 @@ function renderBorrowList(){
 
         body.innerHTML += `
         <tr>
-            <td>${item.lot}</td>
-
-            <td>${item.qty}</td>
-
-            <td>
+    <td>${row.lot}</td>
+    <td>${row.location || ''}</td>
+    <td>${row.qty}</td>
+    <td>
                 <button
                     onclick="removeBorrowItem(${index})">
                     ลบ
