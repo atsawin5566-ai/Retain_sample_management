@@ -1444,7 +1444,7 @@ function exportHistory() {
         ) || [];
 
     let csv =
-        "Date,Type,PN,Lot,Qty,User\n";
+        "Date,Type,PN,Lot,Qty,Location,User\n";
 
     history.forEach(item => {
 
@@ -1454,6 +1454,7 @@ function exportHistory() {
             item.pn + "," +
             item.lot + "," +
             item.qty + "," +
+            (item.location || "") + "," +
             item.user +
             "\n";
 
