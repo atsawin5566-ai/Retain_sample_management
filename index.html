@@ -362,11 +362,12 @@ class="hidden"
 <table>
 
     <thead>
-        <tr>
-            <th>Lot</th>
-            <th>Qty</th>
-            <th>Action</th>
-        </tr>
+       <tr>
+    <th>Lot</th>
+    <th>Location</th>
+    <th>Qty</th>
+    <th>Action</th>
+      </tr>
     </thead>
 
     <tbody id="borrowListBody">
@@ -407,10 +408,11 @@ class="hidden"
 
             <thead>
                 <tr>
-                    <th>No.</th>
-                    <th>Lot</th>
-                    <th>Qty</th>
-                </tr>
+    <th>No.</th>
+    <th>Lot</th>
+    <th>Location</th>
+    <th>Qty</th>
+            </tr>
             </thead>
 
             <tbody id="printTableBody">
@@ -1273,6 +1275,7 @@ function borrowItem() {
                 <tr>
                     <td>${index + 1}</td>
                     <td>${row.lot}</td>
+                    <td>${row.location || ''}</td>
                     <td>${row.qty}</td>
                 </tr>
                 `;
@@ -1651,7 +1654,7 @@ function addBorrowLot(){
     borrowList.push({
 
         lot: lot,
-
+        location: stockItem.location, 
         qty: qty
 
     });
