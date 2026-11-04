@@ -409,6 +409,7 @@ class="hidden"
                 <tr>
                     <th>No.</th>
                     <th>Lot</th>
+                    <th>Location</th>
                     <th>Qty</th>
                 </tr>
             </thead>
@@ -1277,6 +1278,7 @@ function borrowItem() {
                     <td>${index + 1}</td>
                     <td>${row.lot}</td>
                     <td>${row.qty}</td>
+                    <td>${item.location || ''}</td>
                 </tr>
                 `;
 
@@ -1649,14 +1651,14 @@ function addBorrowLot(){
         return;
     }
 
-    borrowList.push({
+   const stockItem =
+    getStock().find(x => x.lot === lot);
 
-        lot: lot,
-
-        qty: qty
-
-    });
-
+borrowList.push({
+    lot: lot,
+    location: stockItem ? stockItem.location : "",
+    qty: qty
+});
     renderBorrowList();
 
     document.getElementById(
