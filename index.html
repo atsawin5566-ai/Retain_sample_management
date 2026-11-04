@@ -608,6 +608,7 @@ class="hidden"
         <th>PN</th>
         <th>Lot</th>
         <th>Qty</th>
+        <th>Location</th>
         <th>User</th>
         <th>Action</th>
     </tr>
@@ -1226,6 +1227,8 @@ function borrowItem() {
             pn: item.pn,
 
             lot: row.lot,
+              
+            location: item.location,
 
             qty: row.qty,
 
@@ -1355,14 +1358,10 @@ function returnItem() {
             pn:
                 item ? item.pn : "",
 
-            lot:
-                row.lot,
-
-            qty:
-                row.qty,
-
-            user:
-                user
+            lot: row.lot,
+            location: item.location,
+            qty: row.qty,
+            user: user
 
         });
 
@@ -1572,6 +1571,7 @@ latestHistory.forEach((item,index) => {
     <td>${item.pn}</td>
     <td>${item.lot}</td>
     <td>${item.qty}</td>
+    <td>${item.location || ""}</td>
     <td>${item.user}</td>
 
     <td>
