@@ -1657,9 +1657,12 @@ function addBorrowLot(){
 
 borrowList.push({
     lot: lot,
-    location: stockItem ? stockItem.location : "",
+    location: stockItem.location,
     qty: qty
 });
+
+updateBorrowDocument();
+      
     renderBorrowList();
 
     document.getElementById(
