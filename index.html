@@ -142,9 +142,13 @@ body{
     width:80px;
 }
 
-input{
+input,
+select{
     padding:8px;
     margin:5px;
+    border:1px solid #ddd;
+    border-radius:5px;
+    box-sizing:border-box;
 }
 
 button{
@@ -518,7 +522,16 @@ class="hidden"
 
     <input id="location" placeholder="Location">
 
-    <input id="materialType" placeholder="Material Type">
+   <select id="materialType">
+    <option value="">-- Select Material Type --</option>
+    <option value="Raw Material">Raw Material</option>
+    <option value="Packaging">Packaging</option>
+    <option value="Retain Sample">Retain Sample</option>
+    <option value="Resin">Resin</option>
+    <option value="Hardener">Hardener</option>
+    <option value="Solvent">Solvent</option>
+    <option value="Additive">Additive</option>
+    </select>
 
 
    
@@ -962,6 +975,9 @@ function editItem(index) {
 
     document.getElementById("location").value =
         item.location;
+      
+    document.getElementById("materialType").value =
+        item.materialType || "";
 
     editIndex = index;
 
@@ -1469,6 +1485,7 @@ function exportHistory() {
     document.getElementById("storeDate").value = "";
     document.getElementById("qty").value = "";
     document.getElementById("location").value = "";
+    document.getElementById("materialType").value = "";
 
 }   
 function clearBorrowForm() {
