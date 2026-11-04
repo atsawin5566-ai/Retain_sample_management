@@ -361,6 +361,7 @@ class="hidden"
         <tr>
             <th>Lot</th>
             <th>Qty</th>
+            <th>Type</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -406,6 +407,7 @@ class="hidden"
                     <th>No.</th>
                     <th>Lot</th>
                     <th>Qty</th>
+                    <th>Type</th>
                 </tr>
             </thead>
 
@@ -483,6 +485,7 @@ class="hidden"
             <tr>
                 <th>Lot</th>
                 <th>Qty</th>
+                <th>Type</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -515,6 +518,8 @@ class="hidden"
     <input id="storeDate" type="date">
 
     <input id="qty" type="number" placeholder="Qty">
+
+    <input id="Type" placeholder="Type">
 
     <input id="location" placeholder="Location">
 
@@ -562,6 +567,7 @@ class="hidden"
 <th>Lot</th>
 <th>Date</th>
 <th>Qty</th>
+<th>Type</th>
 <th>Location</th>
 <th>Status</th>
 <th>Action</th>     
@@ -591,6 +597,7 @@ class="hidden"
         <th>PN</th>
         <th>Lot</th>
         <th>Qty</th>
+        <th>Type</th>
         <th>User</th>
         <th>Action</th>
     </tr>
@@ -751,9 +758,10 @@ function saveItem() {
     const lot = document.getElementById("lot").value.trim();
     const date = document.getElementById("storeDate").value;
     const qty = document.getElementById("qty").value;
+    const type = document.getElementById("Type").value;  
     const location = document.getElementById("location").value.trim();
 
-    if (!pn || !lot || !date || !qty || !location) {
+    if (!pn || !lot || !date || !qty || !Type || !location) {
         alert("กรุณากรอกข้อมูลให้ครบ");
         return;
     }
@@ -780,6 +788,7 @@ function saveItem() {
         lot,
         date,
         qty,
+        type,  
         location
     });
 
@@ -897,6 +906,8 @@ body.innerHTML += `
     <td>${item.date}</td>
 
     <td>${item.qty}</td>
+
+    <td>${item.type || ""}</td>
 
     <td>${item.location}</td>
 
@@ -1459,6 +1470,7 @@ function exportHistory() {
     document.getElementById("lot").value = "";
     document.getElementById("storeDate").value = "";
     document.getElementById("qty").value = "";
+    document.getElementById("Type").value = "";   
     document.getElementById("location").value = "";
 
 }   
