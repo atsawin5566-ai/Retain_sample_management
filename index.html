@@ -67,71 +67,79 @@ body{
 
 }
 
-/* ตารางประวัติ */
+/* ตารางประวัติไม่ให้ตกบรรทัด */
+
 .history-card table{
+
     width:100%;
-    min-width:1600px;
+
 }
 
 .history-card th,
 .history-card td{
+
     white-space:nowrap;
+
     text-align:center;
+
     padding:8px;
+
 }
 
 /* No. */
+
 .history-card th:nth-child(1),
 .history-card td:nth-child(1){
-    width:60px;
+    width:50px;
 }
 
 /* Date */
+
 .history-card th:nth-child(2),
 .history-card td:nth-child(2){
-    width:180px;
+    width:170px;
 }
 
-/* Transaction */
+/* Type */
+
 .history-card th:nth-child(3),
 .history-card td:nth-child(3){
-    width:150px;
+    width:120px;
 }
 
 /* PN */
+
 .history-card th:nth-child(4),
 .history-card td:nth-child(4){
-    width:120px;
-}
-
-/* Lot */
-.history-card th:nth-child(5),
-.history-card td:nth-child(5){
-    width:120px;
-}
-
-/* Qty */
-.history-card th:nth-child(6),
-.history-card td:nth-child(6){
     width:80px;
 }
 
-/* Material Type */
-.history-card th:nth-child(7),
-.history-card td:nth-child(7){
-    width:150px;
+/* Lot */
+
+.history-card th:nth-child(5),
+.history-card td:nth-child(5){
+    width:100px;
+}
+
+/* Qty */
+
+.history-card th:nth-child(6),
+.history-card td:nth-child(6){
+    width:70px;
 }
 
 /* User */
-.history-card th:nth-child(8),
-.history-card td:nth-child(8){
-    width:120px;
+
+.history-card th:nth-child(7),
+.history-card td:nth-child(7){
+    width:100px;
 }
 
 /* Action */
-.history-card th:nth-child(9),
-.history-card td:nth-child(9){
-    width:100px;
+
+.history-card th:nth-child(8),
+.history-card td:nth-child(8){
+    width:80px;
 }
 
 input{
@@ -353,7 +361,6 @@ class="hidden"
         <tr>
             <th>Lot</th>
             <th>Qty</th>
-            <th>Type</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -399,7 +406,6 @@ class="hidden"
                     <th>No.</th>
                     <th>Lot</th>
                     <th>Qty</th>
-                    <th>Type</th>
                 </tr>
             </thead>
 
@@ -477,7 +483,6 @@ class="hidden"
             <tr>
                 <th>Lot</th>
                 <th>Qty</th>
-                <th>Type</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -510,15 +515,6 @@ class="hidden"
     <input id="storeDate" type="date">
 
     <input id="qty" type="number" placeholder="Qty">
-
-    <select id="Type">
-    <option value="">Select Type</option>
-    <option value="RM">RM</option>
-    <option value="FG">FG</option>
-    <option value="WIP">WIP</option>
-    <option value="Chemical">Chemical</option>
-    <option value="Packaging">Packaging</option>
-    </select>
 
     <input id="location" placeholder="Location">
 
@@ -566,7 +562,6 @@ class="hidden"
 <th>Lot</th>
 <th>Date</th>
 <th>Qty</th>
-<th>Type</th>
 <th>Location</th>
 <th>Status</th>
 <th>Action</th>     
@@ -590,15 +585,14 @@ class="hidden"
 
 <thead>
     <tr>
-    <th>No.</th>
-    <th>Date</th>
-    <th>Transaction</th>
-    <th>PN</th>
-    <th>Lot</th>
-    <th>Qty</th>
-    <th>Material Type</th>
-    <th>User</th>
-    <th>Action</th>
+        <th>No.</th>
+        <th>Date</th>
+        <th>Type</th>
+        <th>PN</th>
+        <th>Lot</th>
+        <th>Qty</th>
+        <th>User</th>
+        <th>Action</th>
     </tr>
 </thead>
 
@@ -757,10 +751,9 @@ function saveItem() {
     const lot = document.getElementById("lot").value.trim();
     const date = document.getElementById("storeDate").value;
     const qty = document.getElementById("qty").value;
-    const type = document.getElementById("Type").value;  
     const location = document.getElementById("location").value.trim();
 
-    if (!pn || !lot || !date || !qty || !type || !location) {
+    if (!pn || !lot || !date || !qty || !location) {
         alert("กรุณากรอกข้อมูลให้ครบ");
         return;
     }
@@ -787,7 +780,6 @@ function saveItem() {
         lot,
         date,
         qty,
-        type,  
         location
     });
 
@@ -960,9 +952,6 @@ function editItem(index) {
     document.getElementById("qty").value =
         item.qty;
 
-      document.getElementById("type").value =
-        item.type;
-
     document.getElementById("location").value =
         item.location;
 
@@ -1019,9 +1008,6 @@ function updateItem() {
 
         qty:
         document.getElementById("qty").value,
-
-        type:
-        document.getElementById("type").value,
 
         location:
         document.getElementById("location").value
@@ -1216,8 +1202,6 @@ function borrowItem() {
 
             qty: row.qty,
 
-            type: row.type,
-
             user: user
 
         });
@@ -1263,8 +1247,6 @@ function borrowItem() {
                     <td>${index + 1}</td>
                     <td>${row.lot}</td>
                     <td>${row.qty}</td>
-                    <td>${row.type}</td>
-                    <td>${row.location}</td>
                 </tr>
                 `;
 
@@ -1399,7 +1381,6 @@ function exportReport() {
             item.lot + "," +
             item.date + "," +
             item.qty + "," +
-            item.type + "," +
             item.location +
             "\n";
 
@@ -1446,7 +1427,6 @@ function exportHistory() {
             item.pn + "," +
             item.lot + "," +
             item.qty + "," +
-            item.type + "," +
             item.user +
             "\n";
 
@@ -1479,7 +1459,6 @@ function exportHistory() {
     document.getElementById("lot").value = "";
     document.getElementById("storeDate").value = "";
     document.getElementById("qty").value = "";
-    document.getElementById("type").value = "";   
     document.getElementById("location").value = "";
 
 }   
@@ -1564,7 +1543,6 @@ latestHistory.forEach((item,index) => {
     <td>${item.pn}</td>
     <td>${item.lot}</td>
     <td>${item.qty}</td>
-    <td>${item.type}</td>
     <td>${item.user}</td>
 
     <td>
