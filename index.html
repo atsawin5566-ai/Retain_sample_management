@@ -518,6 +518,9 @@ class="hidden"
 
     <input id="location" placeholder="Location">
 
+    <input id="materialType" placeholder="Material Type">
+
+
    
 <button id="saveBtn" onclick="saveItem()">
     บันทึก
@@ -563,6 +566,7 @@ class="hidden"
 <th>Date</th>
 <th>Qty</th>
 <th>Location</th>
+<th>Material Type</th>
 <th>Status</th>
 <th>Action</th>     
 </tr>
@@ -752,8 +756,9 @@ function saveItem() {
     const date = document.getElementById("storeDate").value;
     const qty = document.getElementById("qty").value;
     const location = document.getElementById("location").value.trim();
+    const materialType = document.getElementById("materialType").value.trim();
 
-    if (!pn || !lot || !date || !qty || !location) {
+    if (!pn || !lot || !date || !qty || !location || !materialType) {
         alert("กรุณากรอกข้อมูลให้ครบ");
         return;
     }
@@ -780,7 +785,8 @@ function saveItem() {
         lot,
         date,
         qty,
-        location
+        location,
+        materialType
     });
 
    localStorage.setItem(
@@ -899,6 +905,8 @@ body.innerHTML += `
     <td>${item.qty}</td>
 
     <td>${item.location}</td>
+
+    <td>${item.materialType || ""}</td>
 
     <td>${status}</td>
 
@@ -1381,6 +1389,7 @@ function exportReport() {
             item.lot + "," +
             item.date + "," +
             item.qty + "," +
+            item.mateialType + "," +
             item.location +
             "\n";
 
