@@ -409,7 +409,6 @@ class="hidden"
                 <tr>
                     <th>No.</th>
                     <th>Lot</th>
-                    <th>Location</th>
                     <th>Qty</th>
                 </tr>
             </thead>
@@ -609,7 +608,6 @@ class="hidden"
         <th>PN</th>
         <th>Lot</th>
         <th>Qty</th>
-        <th>Location</th>
         <th>User</th>
         <th>Action</th>
     </tr>
@@ -1228,8 +1226,6 @@ function borrowItem() {
             pn: item.pn,
 
             lot: row.lot,
-              
-            location: item.location,
 
             qty: row.qty,
 
@@ -1277,9 +1273,7 @@ function borrowItem() {
                 <tr>
                     <td>${index + 1}</td>
                     <td>${row.lot}</td>
-                    <td>${row.location || ''}</td>
                     <td>${row.qty}</td>
-                    
                 </tr>
                 `;
 
@@ -1361,10 +1355,14 @@ function returnItem() {
             pn:
                 item ? item.pn : "",
 
-            lot: row.lot,
-            location: item.location,
-            qty: row.qty,
-            user: user
+            lot:
+                row.lot,
+
+            qty:
+                row.qty,
+
+            user:
+                user
 
         });
 
@@ -1447,7 +1445,7 @@ function exportHistory() {
         ) || [];
 
     let csv =
-        "Date,Type,PN,Lot,Qty,Location,User\n";
+        "Date,Type,PN,Lot,Qty,User\n";
 
     history.forEach(item => {
 
@@ -1457,7 +1455,6 @@ function exportHistory() {
             item.pn + "," +
             item.lot + "," +
             item.qty + "," +
-            (item.location || "") + "," +
             item.user +
             "\n";
 
@@ -1575,7 +1572,6 @@ latestHistory.forEach((item,index) => {
     <td>${item.pn}</td>
     <td>${item.lot}</td>
     <td>${item.qty}</td>
-    <td>${item.location || ""}</td>
     <td>${item.user}</td>
 
     <td>
@@ -1652,25 +1648,14 @@ function addBorrowLot(){
         return;
     }
 
-   const stockItem =
-    getStock().find(x => x.lot === lot);
+    borrowList.push({
 
-const stockItem =
-    getStock().find(x => x.lot === lot);
+        lot: lot,
 
-if (!stockItem) {
-    alert("ไม่พบ Lot : " + lot);
-    return;
-}
+        qty: qty
 
-borrowList.push({
-    lot: lot,
-    location: stockItem.location || "",
-    qty: qty
-});
-      
-    updateBorrowDocument();
-      
+    });
+
     renderBorrowList();
 
     document.getElementById(
@@ -1684,19 +1669,24 @@ borrowList.push({
 }
 function renderBorrowList(){
 
-    const tbody =
-        document.getElementById("borrowTableBody");
+    const body =
+        document.getElementById(
+            "borrowListBody"
+        );
 
-    tbody.innerHTML = "";
+    body.innerHTML = "";
 
-    borrowList.forEach((row,index)=>{
+    borrowList.forEach((item,index)=>{
 
-        tbody.innerHTML += `
+        body.innerHTML += `
         <tr>
-            <td>${row.lot}</td>
-            <td>${row.qty}</td>
+            <td>${item.lot}</td>
+
+            <td>${item.qty}</td>
+
             <td>
-                <button onclick="removeBorrowItem(${index})">
+                <button
+                    onclick="removeBorrowItem(${index})">
                     ลบ
                 </button>
             </td>
