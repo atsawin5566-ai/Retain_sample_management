@@ -1554,11 +1554,11 @@ latestHistory.forEach((item,index) => {
 
     let rowColor = "";
 
-    if(item.type === "BORROW"){
+    if(item.type === "เบิกออก"){
 
         rowColor = "#ffe5e5";
 
-    }else if(item.type === "RETURN"){
+    }else if(item.type === "รับคืน"){
 
         rowColor = "#e5ffe5";
 
@@ -1571,8 +1571,8 @@ latestHistory.forEach((item,index) => {
     <td>
         ${
             item.type === "BORROW"
-            ? "🔴 BORROW"
-            : "🟢 RETURN"
+            ? "🔴 เบิกออก"
+            : "🟢 รับคืน"
         }
     </td>
     <td>${item.pn}</td>
