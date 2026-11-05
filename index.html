@@ -1435,7 +1435,9 @@ function exportReport() {
         URL.createObjectURL(blob);
 
     link.download =
-        "Storage_Report.csv";
+    "รายงานสต๊อก_" +
+    new Date().toISOString().split("T")[0] +
+    ".csv";
 
     link.click();
 
@@ -1482,7 +1484,9 @@ function exportHistory() {
         URL.createObjectURL(blob);
 
     link.download =
-        "ประวัติการเบิกและคืนชิ้นงาน.csv";
+    "รายงานประวัติการเบิกคืน_" +
+    new Date().toISOString().split("T")[0] +
+    ".csv";
 
     link.click();
 
