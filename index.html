@@ -1339,42 +1339,39 @@ function returnItem() {
                 x => x.lot === row.lot
             );
 
-        const totalBorrow =
-            history
-                .filter(h =>
-                    h.type === "BORROW" &&
-                    h.lot === row.lot
-                )
-                .reduce(
-                    (sum,h) =>
-                        sum + Number(h.qty),
-                    0
-                );
+        if(Number(row.qty) <= 0){
 
-        const totalReturn =
-            history
-                .filter(h =>
-                    h.type === "RETURN" &&
-                    h.lot === row.lot
-                )
-                .reduce(
-                    (sum,h) =>
-                        sum + Number(h.qty),
-                    0
-                );
+            alert(
+                "❌ จำนวนคืนต้องมากกว่า 0\n" +
+                "Lot : " + row.lot
+            );
 
-        const remainQty =
-            totalBorrow - totalReturn;
+            return;
+        }
 
-        if(Number(row.qty) > remainQty){
+        const borrowItem =
+            history.find(h =>
+                h.type === "BORROW" &&
+                h.lot === row.lot
+            );
+
+        if(!borrowItem){
+
+            alert(
+                "❌ ไม่พบประวัติการเบิก\n" +
+                "Lot : " + row.lot
+            );
+
+            return;
+        }
+
+        if(Number(row.qty) > Number(borrowItem.qty)){
 
             alert(
                 "❌ คืนเกินจำนวนที่เบิก\n" +
                 "Lot : " + row.lot +
-                "\nเบิกทั้งหมด : " + totalBorrow +
-                "\nคืนแล้ว : " + totalReturn +
-                "\nคงเหลือที่คืนได้ : " +
-                remainQty
+                "\nยอดคงเหลือ : " +
+                borrowItem.qty
             );
 
             return;
@@ -1416,34 +1413,19 @@ function returnItem() {
 
         });
 
-        const borrowItem =
-            history.find(h =>
-                h.type === "BORROW" &&
-                h.lot === row.lot
-            );
+        borrowItem.qty =
+            Number(borrowItem.qty) -
+            Number(row.qty);
 
-        if(borrowItem){
+        if(Number(borrowItem.qty) <= 0){
 
-            const remainingQty =
-                Number(borrowItem.qty) -
-                Number(row.qty);
-
-            if(remainingQty <= 0){
-
-                history =
-                    history.filter(h =>
-                        !(
-                            h.type === "BORROW" &&
-                            h.lot === row.lot
-                        )
-                    );
-
-            }else{
-
-                borrowItem.qty =
-                    remainingQty;
-
-            }
+            history =
+                history.filter(h =>
+                    !(
+                        h.type === "BORROW" &&
+                        h.lot === row.lot
+                    )
+                );
 
         }
 
@@ -1476,6 +1458,8 @@ function returnItem() {
     );
 
 }
+
+      
 function exportReport() {
 
     const data = getStock();
