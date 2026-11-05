@@ -363,9 +363,11 @@ class="hidden"
 
     <thead>
         <tr>
-            <th>Lot</th>
-            <th>Qty</th>
-            <th>Action</th>
+<th>Lot</th>
+<th>Location</th>
+<th>Qty</th>
+<th>Action</th>
+
         </tr>
     </thead>
 
@@ -407,9 +409,10 @@ class="hidden"
 
             <thead>
                 <tr>
-                    <th>No.</th>
-                    <th>Lot</th>
-                    <th>Qty</th>
+<th>No.</th>
+<th>Lot</th>
+<th>Location</th>
+<th>Qty</th>
                 </tr>
             </thead>
 
@@ -1271,9 +1274,9 @@ function borrowItem() {
 
                 printTableBody.innerHTML += `
                 <tr>
-                    <td>${index + 1}</td>
-                    <td>${row.lot}</td>
-                    <td>${row.qty}</td>
+<td>${row.lot}</td>
+<td>${row.location || ''}</td>
+<td>${row.qty}</td>
                 </tr>
                 `;
 
@@ -1678,21 +1681,18 @@ function renderBorrowList(){
 
     borrowList.forEach((item,index)=>{
 
-        body.innerHTML += `
-        <tr>
-            <td>${item.lot}</td>
-
-            <td>${item.qty}</td>
-
-            <td>
-                <button
-                    onclick="removeBorrowItem(${index})">
-                    ลบ
-                </button>
-            </td>
-        </tr>
-        `;
-
+        tbody.innerHTML += `
+<tr>
+    <td>${row.lot}</td>
+    <td>${row.location || ''}</td>
+    <td>${row.qty}</td>
+    <td>
+        <button onclick="removeBorrowItem(${index})">
+            ลบ
+        </button>
+    </td>
+</tr>
+`;
     });
 
 }
