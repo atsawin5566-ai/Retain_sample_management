@@ -1402,18 +1402,19 @@ function exportReport() {
 
     const data = getStock();
 
-   let csv =
-    "PN,Lot,Date,Qty,Location,Material Type\n";
+  let csv =
+    "PN,Lot,Date,Qty,Location,Material Type,Status\n";
 
     data.forEach(item => {
 
-        csv +=
+    csv +=
     item.pn + "," +
     item.lot + "," +
     item.date + "," +
     item.qty + "," +
     item.location + "," +
-    (item.materialType || "") +
+    (item.materialType || "") + "," +
+    (item.status || "") +
     "\n";
 
     });
