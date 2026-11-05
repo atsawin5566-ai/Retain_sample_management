@@ -1242,16 +1242,44 @@ function borrowItem() {
     });
 
     localStorage.setItem(
-        "borrowHistory",
-        JSON.stringify(history)
-    );
+    "borrowHistory",
+    JSON.stringify(history)
+);
 
-    // สร้างข้อมูลใบเบิก
+let documents =
+    JSON.parse(
+        localStorage.getItem(
+            "borrowDocuments"
+        )
+    ) || [];
 
-    document.getElementById(
-        "docNo"
-    ).innerText =
-        "BOR-" + Date.now();
+const docNo =
+    "BOR-" + Date.now();
+
+documents.push({
+
+    docNo: docNo,
+
+    date:
+        new Date().toLocaleString(),
+
+    user: user,
+
+    items:
+        [...borrowList]
+
+});
+
+localStorage.setItem(
+    "borrowDocuments",
+    JSON.stringify(documents)
+);
+
+// สร้างข้อมูลใบเบิก
+document.getElementById(
+    "docNo"
+).innerText =
+    docNo;
 
     document.getElementById(
         "docDate"
