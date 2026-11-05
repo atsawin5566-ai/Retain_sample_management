@@ -1215,26 +1215,29 @@ function borrowItem() {
                 x => x.lot === row.lot
             );
 
-        history.push({
+  history.push({
 
-            transactionId:
-                "BOR-" + Date.now(),
+    transactionId:
+        "BOR-" + Date.now(),
 
-            type: "BORROW",
+    type: "BORROW",
 
-            date:
-                new Date()
-                .toLocaleString(),
+    date:
+        new Date()
+        .toLocaleString(),
 
-            pn: item.pn,
+    pn: item.pn,
 
-            lot: row.lot,
+    lot: row.lot,
 
-            qty: row.qty,
+    location:
+        row.location || "",
 
-            user: user
+    qty: row.qty,
 
-        });
+    user: user
+
+});
 
     });
 
