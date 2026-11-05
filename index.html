@@ -507,7 +507,23 @@ class="hidden"
 
 </div>
      
+<h3>ประวัติใบเบิกย้อนหลัง</h3>
 
+<table>
+    <thead>
+        <tr>
+            <th>เลขที่เอกสาร</th>
+            <th>วันที่</th>
+            <th>ผู้เบิก</th>
+            <th>ดูเอกสาร</th>
+        </tr>
+    </thead>
+
+    <tbody id="documentHistoryBody">
+
+    </tbody>
+</table>
+   
       
 <div id="alertArea"></div>
 
@@ -1319,6 +1335,7 @@ document.getElementById(
 
     displayData();
     displayHistory();
+    displayBorrowDocuments();  
 
     // ล้างรายการเบิกทั้งหมด
 
@@ -2006,6 +2023,43 @@ function printBorrowDocument() {
         printWindow.print();
 
     }, 500);
+
+}
+function displayBorrowDocuments(){
+
+    const docs =
+        JSON.parse(
+            localStorage.getItem(
+                "borrowDocuments"
+            )
+        ) || [];
+
+    const body =
+        document.getElementById(
+            "documentHistoryBody"
+        );
+
+    if(!body) return;
+
+    body.innerHTML = "";
+
+    docs.slice().reverse().forEach(doc => {
+
+        body.innerHTML += `
+        <tr>
+            <td>${doc.docNo}</td>
+            <td>${doc.date}</td>
+            <td>${doc.user}</td>
+            <td>
+                <button
+                    onclick="viewBorrowDocument('${doc.docNo}')">
+                    ดู
+                </button>
+            </td>
+        </tr>
+        `;
+
+    });
 
 }
       
