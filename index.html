@@ -100,7 +100,7 @@ body{
     width:170px;
 }
 
-/* Transaction */
+/* Type */
 
 .history-card th:nth-child(3),
 .history-card td:nth-child(3){
@@ -607,7 +607,7 @@ class="hidden"
     <tr>
         <th>No.</th>
         <th>Date</th>
-        <th>Transaction</th>
+        <th>Type</th>
         <th>PN</th>
         <th>Lot</th>
         <th>Qty</th>
@@ -1220,7 +1220,7 @@ function borrowItem() {
             transactionId:
                 "BOR-" + Date.now(),
 
-            transaction: "เบิกออก",
+            type: "BORROW",
 
             date:
                 new Date()
@@ -1350,7 +1350,7 @@ function returnItem() {
             transactionId:
                 "RET-" + Date.now(),
 
-            type: "รับคืน",
+            type: "RETURN",
 
             date:
                 new Date()
@@ -1403,7 +1403,7 @@ function exportReport() {
     const data = getStock();
 
   let csv =
-    "PN,Lot,Date,Qty,Location,Material Transaction,Status\n";
+    "PN,Lot,Date,Qty,Location,Material Type,Status\n";
 
     data.forEach(item => {
 
@@ -1450,13 +1450,13 @@ function exportHistory() {
         ) || [];
 
     let csv =
-        "Date,Transaction,PN,Lot,Qty,location,User\n";
+        "Date,Type,PN,Lot,Qty,location,User\n";
 
     history.forEach(item => {
 
         csv +=
             item.date + "," +
-            item.Transaction + "," +
+            item.type + "," +
             item.pn + "," +
             item.lot + "," +
             item.qty + "," +
@@ -1554,11 +1554,11 @@ latestHistory.forEach((item,index) => {
 
     let rowColor = "";
 
-    if(item.transaction === "เบิกออก"){
+    if(item.type === "BORROW"){
 
         rowColor = "#ffe5e5";
 
-    }else if(item.transaction === "รับคืน"){
+    }else if(item.type === "RETURN"){
 
         rowColor = "#e5ffe5";
 
@@ -1570,9 +1570,9 @@ latestHistory.forEach((item,index) => {
     <td>${item.date}</td>
     <td>
         ${
-            item.transaction === "เบิกออก"
-            ? "🔴 เบิกออก"
-            : "🟢 รับคืน"
+            item.type === "BORROW"
+            ? "🔴 BORROW"
+            : "🟢 RETURN"
         }
     </td>
     <td>${item.pn}</td>
