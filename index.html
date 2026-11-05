@@ -1414,7 +1414,7 @@ function exportReport() {
     item.qty + "," +
     item.location + "," +
     (item.materialType || "") + "," +
-    (item.status || "") +
+    (Number(item.qty) > 0 ? "Available" : "Out of Stock") +
     "\n";
 
     });
@@ -1450,7 +1450,7 @@ function exportHistory() {
         ) || [];
 
     let csv =
-        "Date,Type,PN,Lot,Qty,User\n";
+        "Date,Type,PN,Lot,Qty,location,User\n";
 
     history.forEach(item => {
 
@@ -1460,6 +1460,7 @@ function exportHistory() {
             item.pn + "," +
             item.lot + "," +
             item.qty + "," +
+            item.location + "," +
             item.user +
             "\n";
 
