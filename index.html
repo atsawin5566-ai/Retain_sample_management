@@ -607,7 +607,7 @@ class="hidden"
     <tr>
         <th>No.</th>
         <th>Date</th>
-        <th>Type</th>
+        <th>Transaction</th>
         <th>PN</th>
         <th>Lot</th>
         <th>Qty</th>
@@ -1570,9 +1570,9 @@ latestHistory.forEach((item,index) => {
     <td>${item.date}</td>
     <td>
         ${
-            item.type === "BORROW"
-            ? "🔴 BORROW"
-            : "🟢 RETURN"
+            item.transaction === "เบิกออก"
+            ? "🔴 เบิกออก"
+            : "🟢 รับคืน"
         }
     </td>
     <td>${item.pn}</td>
