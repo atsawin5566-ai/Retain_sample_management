@@ -2062,6 +2062,65 @@ function displayBorrowDocuments(){
     });
 
 }
+function viewBorrowDocument(docNo){
+
+    const docs =
+        JSON.parse(
+            localStorage.getItem(
+                "borrowDocuments"
+            )
+        ) || [];
+
+    const doc =
+        docs.find(
+            d => d.docNo === docNo
+        );
+
+    if(!doc){
+
+        alert("ไม่พบเอกสาร");
+
+        return;
+    }
+
+    document.getElementById(
+        "docNo"
+    ).innerText =
+        doc.docNo;
+
+    document.getElementById(
+        "docDate"
+    ).innerText =
+        doc.date;
+
+    document.getElementById(
+        "docUser"
+    ).innerText =
+        doc.user;
+
+    const printTableBody =
+        document.getElementById(
+            "printTableBody"
+        );
+
+    printTableBody.innerHTML = "";
+
+    doc.items.forEach(
+        (item,index)=>{
+
+            printTableBody.innerHTML += `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${item.lot}</td>
+                <td>${item.location || ""}</td>
+                <td>${item.qty}</td>
+            </tr>
+            `;
+
+        }
+    );
+
+}
       
 window.onload = function(){
 
