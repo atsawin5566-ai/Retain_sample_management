@@ -1339,40 +1339,78 @@ function returnItem() {
                 x => x.lot === row.lot
             );
 
-        if(item){
+if(item){
 
-            item.qty =
-                Number(item.qty)
-                +
-                Number(row.qty);
+    item.qty =
+        Number(item.qty)
+        +
+        Number(row.qty);
 
-        }
+}
 
-        history.push({
+const totalBorrow =
+    history
+        .filter(h =>
+            h.type === "BORROW" &&
+            h.lot === row.lot
+        )
+        .reduce(
+            (sum,h) =>
+                sum + Number(h.qty),
+            0
+        );
 
-            transactionId:
-                "RET-" + Date.now(),
+const totalReturn =
+    history
+        .filter(h =>
+            h.type === "RETURN" &&
+            h.lot === row.lot
+        )
+        .reduce(
+            (sum,h) =>
+                sum + Number(h.qty),
+            0
+        ) +
+        Number(row.qty);
 
-            type: "RETURN",
+history.push({
 
-            date:
-                new Date()
-                    .toLocaleString(),
+    transactionId:
+        "RET-" + Date.now(),
 
-            pn:
-                item ? item.pn : "",
+    type: "RETURN",
 
-            lot:
-                row.lot,
+    date:
+        new Date()
+            .toLocaleString(),
 
-            qty:
-                row.qty,
+    pn:
+        item ? item.pn : "",
 
-            user:
-                user
+    lot:
+        row.lot,
 
-        });
+    location:
+        row.location || "",
 
+    qty:
+        row.qty,
+
+    user:
+        user
+
+});
+
+if(totalReturn >= totalBorrow){
+
+    history = history.filter(h =>
+        !(
+            h.type === "BORROW" &&
+            h.lot === row.lot
+        )
+    );
+
+}
     });
 
     localStorage.setItem(
