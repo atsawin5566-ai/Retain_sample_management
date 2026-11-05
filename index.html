@@ -1273,13 +1273,13 @@ function borrowItem() {
             (row,index)=>{
 
                 printTableBody.innerHTML += `
-                <tr>
-<td>${index + 1}</td>
-<td>${row.lot}</td>
-<td>${row.location || ''}</td>
-<td>${row.qty}</td>
-                </tr>
-                `;
+<tr>
+    <td>${index + 1}</td>
+    <td>${row.lot}</td>
+    <td>${row.location || ''}</td>
+    <td>${row.qty}</td>
+</tr>
+`;
 
             }
         );
@@ -1652,9 +1652,26 @@ function addBorrowLot(){
         return;
     }
 
+    const stockItem =
+        getStock().find(
+            x => x.lot === lot
+        );
+
+    if(!stockItem){
+
+        alert(
+            "ไม่พบ Lot : " + lot
+        );
+
+        return;
+    }
+
     borrowList.push({
 
         lot: lot,
+
+        location:
+            stockItem.location || "",
 
         qty: qty
 
@@ -1671,6 +1688,7 @@ function addBorrowLot(){
     ).value = "";
 
 }
+      
 function renderBorrowList(){
 
     const body =
@@ -1682,18 +1700,19 @@ function renderBorrowList(){
 
     borrowList.forEach((item,index)=>{
 
-        tbody.innerHTML += `
-<tr>
-    <td>${row.lot}</td>
-    <td>${row.location || ''}</td>
-    <td>${row.qty}</td>
-    <td>
-        <button onclick="removeBorrowItem(${index})">
-            ลบ
-        </button>
-    </td>
-</tr>
-`;
+        body.innerHTML += `
+        <tr>
+            <td>${item.lot}</td>
+            <td>${item.location || ''}</td>
+            <td>${item.qty}</td>
+            <td>
+                <button onclick="removeBorrowItem(${index})">
+                    ลบ
+                </button>
+            </td>
+        </tr>
+        `;
+
     });
 
 }
