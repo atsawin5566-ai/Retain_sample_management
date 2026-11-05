@@ -1456,15 +1456,11 @@ function exportHistory() {
 
         csv +=
             item.date + "," +
-            (item.type === "BORROW"
-                ? "เบิกออก"
-                : item.type === "RETURN"
-                ? "รับคืน"
-                : item.type) + "," +
+            item.type + "," +
             item.pn + "," +
             item.lot + "," +
-            (item.location || "") + "," +
             item.qty + "," +
+            item.location + "," +
             item.user +
             "\n";
 
@@ -1489,6 +1485,7 @@ function exportHistory() {
         "Borrow_History.csv";
 
     link.click();
+
 }
  function clearForm() {
 
@@ -1572,14 +1569,12 @@ latestHistory.forEach((item,index) => {
     <td>${index + 1}</td>
     <td>${item.date}</td>
     <td>
-    ${
-        item.type === "BORROW"
-        ? "🔴 เบิกออก"
-        : item.type === "RETURN"
-        ? "🟢 รับคืน"
-        : item.type
-    }
-</td>
+        ${
+            item.type === "BORROW"
+            ? "🔴 BORROW"
+            : "🟢 RETURN"
+        }
+    </td>
     <td>${item.pn}</td>
     <td>${item.lot}</td>
     <td>${item.qty}</td>
