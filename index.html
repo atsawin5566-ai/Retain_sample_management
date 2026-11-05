@@ -1339,78 +1339,114 @@ function returnItem() {
                 x => x.lot === row.lot
             );
 
-if(item){
+        const totalBorrow =
+            history
+                .filter(h =>
+                    h.type === "BORROW" &&
+                    h.lot === row.lot
+                )
+                .reduce(
+                    (sum,h) =>
+                        sum + Number(h.qty),
+                    0
+                );
 
-    item.qty =
-        Number(item.qty)
-        +
-        Number(row.qty);
+        const totalReturn =
+            history
+                .filter(h =>
+                    h.type === "RETURN" &&
+                    h.lot === row.lot
+                )
+                .reduce(
+                    (sum,h) =>
+                        sum + Number(h.qty),
+                    0
+                );
 
-}
+        const remainQty =
+            totalBorrow - totalReturn;
 
-const totalBorrow =
-    history
-        .filter(h =>
-            h.type === "BORROW" &&
-            h.lot === row.lot
-        )
-        .reduce(
-            (sum,h) =>
-                sum + Number(h.qty),
-            0
-        );
+        if(Number(row.qty) > remainQty){
 
-const totalReturn =
-    history
-        .filter(h =>
-            h.type === "RETURN" &&
-            h.lot === row.lot
-        )
-        .reduce(
-            (sum,h) =>
-                sum + Number(h.qty),
-            0
-        ) +
-        Number(row.qty);
+            alert(
+                "❌ คืนเกินจำนวนที่เบิก\n" +
+                "Lot : " + row.lot +
+                "\nเบิกทั้งหมด : " + totalBorrow +
+                "\nคืนแล้ว : " + totalReturn +
+                "\nคงเหลือที่คืนได้ : " +
+                remainQty
+            );
 
-history.push({
+            return;
+        }
 
-    transactionId:
-        "RET-" + Date.now(),
+        if(item){
 
-    type: "RETURN",
+            item.qty =
+                Number(item.qty) +
+                Number(row.qty);
 
-    date:
-        new Date()
-            .toLocaleString(),
+        }
 
-    pn:
-        item ? item.pn : "",
+        history.push({
 
-    lot:
-        row.lot,
+            transactionId:
+                "RET-" + Date.now(),
 
-    location:
-        row.location || "",
+            type: "RETURN",
 
-    qty:
-        row.qty,
+            date:
+                new Date()
+                    .toLocaleString(),
 
-    user:
-        user
+            pn:
+                item ? item.pn : "",
 
-});
+            lot:
+                row.lot,
 
-if(totalReturn >= totalBorrow){
+            location:
+                row.location || "",
 
-    history = history.filter(h =>
-        !(
-            h.type === "BORROW" &&
-            h.lot === row.lot
-        )
-    );
+            qty:
+                row.qty,
 
-}
+            user:
+                user
+
+        });
+
+        const borrowItem =
+            history.find(h =>
+                h.type === "BORROW" &&
+                h.lot === row.lot
+            );
+
+        if(borrowItem){
+
+            const remainingQty =
+                Number(borrowItem.qty) -
+                Number(row.qty);
+
+            if(remainingQty <= 0){
+
+                history =
+                    history.filter(h =>
+                        !(
+                            h.type === "BORROW" &&
+                            h.lot === row.lot
+                        )
+                    );
+
+            }else{
+
+                borrowItem.qty =
+                    remainingQty;
+
+            }
+
+        }
+
     });
 
     localStorage.setItem(
@@ -1424,6 +1460,7 @@ if(totalReturn >= totalBorrow){
     );
 
     displayData();
+
     displayHistory();
 
     returnList = [];
