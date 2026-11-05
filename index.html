@@ -607,7 +607,7 @@ class="hidden"
     <tr>
         <th>No.</th>
         <th>Date</th>
-        <th>Type</th>
+        <th>Transaction</th>
         <th>PN</th>
         <th>Lot</th>
         <th>Qty</th>
@@ -1450,7 +1450,7 @@ function exportHistory() {
         ) || [];
 
     let csv =
-        "Date,Type,PN,Lot,Qty,location,User\n";
+"Date,Transaction,PN,Lot,Location,Qty,User\n";
 
     history.forEach(item => {
 
