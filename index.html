@@ -1831,32 +1831,48 @@ function addReturnLot(){
             ).value
         );
 
-    if(!lot || qty <= 0){
+    if(!lot){
 
         alert(
-            "กรุณากรอก Lot และ Qty"
+            "❌ กรุณากรอก Lot"
         );
 
         return;
+
     }
 
-    const duplicate =
-        returnList.find(
-            item => item.lot === lot
-        );
-
-    if(duplicate){
+    if(isNaN(qty) || qty <= 0){
 
         alert(
-            "Lot นี้อยู่ในรายการคืนแล้ว"
+            "❌ จำนวนคืนต้องมากกว่า 0"
         );
 
         return;
+
+    }
+
+    const stockItem =
+        getStock().find(
+            x => x.lot === lot
+        );
+
+    if(!stockItem){
+
+        alert(
+            "❌ ไม่พบ Lot : " + lot
+        );
+
+        return;
+
     }
 
     returnList.push({
 
         lot: lot,
+
+        location:
+            stockItem.location || "",
+
         qty: qty
 
     });
@@ -1885,18 +1901,15 @@ function renderReturnList(){
 
         body.innerHTML += `
         <tr>
-
             <td>${item.lot}</td>
-
+            <td>${item.location || ''}</td>
             <td>${item.qty}</td>
-
             <td>
                 <button
                     onclick="removeReturnItem(${index})">
                     ลบ
                 </button>
             </td>
-
         </tr>
         `;
 
