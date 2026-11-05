@@ -100,7 +100,7 @@ body{
     width:170px;
 }
 
-/* Type */
+/* Transaction */
 
 .history-card th:nth-child(3),
 .history-card td:nth-child(3){
@@ -1220,7 +1220,7 @@ function borrowItem() {
             transactionId:
                 "BOR-" + Date.now(),
 
-            type: "BORROW",
+            transaction: "เบิกออก",
 
             date:
                 new Date()
@@ -1350,7 +1350,7 @@ function returnItem() {
             transactionId:
                 "RET-" + Date.now(),
 
-            type: "RETURN",
+            type: "รับคืน",
 
             date:
                 new Date()
@@ -1403,7 +1403,7 @@ function exportReport() {
     const data = getStock();
 
   let csv =
-    "PN,Lot,Date,Qty,Location,Material Type,Status\n";
+    "PN,Lot,Date,Qty,Location,Material Transaction,Status\n";
 
     data.forEach(item => {
 
@@ -1450,13 +1450,13 @@ function exportHistory() {
         ) || [];
 
     let csv =
-        "Date,Type,PN,Lot,Qty,location,User\n";
+        "Date,Transaction,PN,Lot,Qty,location,User\n";
 
     history.forEach(item => {
 
         csv +=
             item.date + "," +
-            item.type + "," +
+            item.Transaction + "," +
             item.pn + "," +
             item.lot + "," +
             item.qty + "," +
@@ -1554,11 +1554,11 @@ latestHistory.forEach((item,index) => {
 
     let rowColor = "";
 
-    if(item.type === "BORROW"){
+    if(item.transaction === "เบิกออก"){
 
         rowColor = "#ffe5e5";
 
-    }else if(item.type === "RETURN"){
+    }else if(item.transaction === "รับคืน"){
 
         rowColor = "#e5ffe5";
 
