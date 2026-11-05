@@ -1460,14 +1460,18 @@ function exportHistory() {
     history.forEach(item => {
 
         csv +=
-            item.date + "," +
-            item.type + "," +
-            item.pn + "," +
-            item.lot + "," +
-            item.qty + "," +
-            item.location + "," +
-            item.user +
-            "\n";
+    item.date + "," +
+    (item.type === "BORROW"
+        ? "เบิกออก"
+        : item.type === "RETURN"
+        ? "รับคืน"
+        : item.type) + "," +
+    item.pn + "," +
+    item.lot + "," +
+    (item.location || "") + "," +
+    item.qty + "," +
+    item.user +
+    "\n";
 
     });
 
