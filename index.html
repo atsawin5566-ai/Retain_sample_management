@@ -506,6 +506,7 @@ class="hidden"
       
     <thead>
         <tr>
+            <th>No.</th> 
             <th>เลขที่เอกสาร</th>
             <th>วันที่</th>
             <th>ผู้เบิก</th>
@@ -547,6 +548,7 @@ class="hidden"
 
         <thead>
             <tr>
+                <th>No.</th>
                 <th>Lot</th>
                 <th>Qty</th>
                 <th>Action</th>
@@ -1989,6 +1991,7 @@ function renderReturnList(){
 
         body.innerHTML += `
         <tr>
+            <td>${index + 1}</td>
             <td>${item.lot}</td>
             <td>${item.location || ''}</td>
             <td>${item.qty}</td>
@@ -2110,6 +2113,7 @@ function displayBorrowDocuments(){
 
         body.innerHTML += `
         <tr>
+            <td>${index + 1}</td>
             <td>${doc.docNo}</td>
             <td>${doc.date}</td>
             <td>${doc.user}</td>
