@@ -159,16 +159,13 @@ button{
 table{
     width:100%;
     border-collapse:collapse;
-    font-size:12px;
-    line-height:1.1;
 }
 
 th,
 td{
     border:1px solid #ddd;
-    padding:2px 4px;
+    padding:8px;
     text-align:center;
-    line-height:1.1;
 }
 
 th{
@@ -240,7 +237,7 @@ th{
     z-index: 10;
     background: #5b43ea;
     color: white;
- }   
+}    
 
       
 
@@ -1726,7 +1723,7 @@ function displayHistory() {
 
 const latestHistory =
     history
-        .slice()
+        .slice(-10)
         .reverse();
 
 latestHistory.forEach((item,index) => {
@@ -2046,12 +2043,11 @@ function printBorrowDocument() {
                 table{
                     width:100%;
                     border-collapse:collapse;
-                    font-size:12px;
                 }
 
                 th,td{
-                    border:1px solid #ddd;
-                    padding:4px 6px;;
+                    border:1px solid #000;
+                    padding:8px;
                     text-align:center;
                 }
             </style>
@@ -2101,10 +2097,10 @@ function displayBorrowDocuments(){
 
     body.innerHTML = "";
 
-const latestDocs =
-    docs
-    .slice()
-    .reverse();
+    const latestDocs =
+        docs
+        .slice(-5)
+        .reverse();
 
     latestDocs.forEach(doc => {
 
