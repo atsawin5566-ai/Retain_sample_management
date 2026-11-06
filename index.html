@@ -144,88 +144,29 @@ body{
 
 input,
 select{
-    padding:5px 8px;
-    font-size:12px;
-    border:1px solid #c0c0c0;
-    border-radius:4px;
-    background:#fafafa;
-
-    box-shadow:
-        inset 0 2px 3px rgba(0,0,0,0.12);
-
-    transition:0.2s;
+    padding:8px;
+    margin:5px;
+    border:1px solid #ddd;
+    border-radius:5px;
+    box-sizing:border-box;
 }
-
-input:focus,
-select:focus{
-    outline:none;
-    border-color:#5b43ea;
-
-    box-shadow:
-        inset 0 2px 3px rgba(0,0,0,0.15),
-        0 0 6px rgba(91,67,234,0.3);
-
-    background:#fff;
-}
-
 
 button{
-    background: linear-gradient(
-        180deg,
-        #6c5ce7 0%,
-        #5b43ea 100%
-    );
-    color:white;
-    border:none;
-    border-radius:6px;
-    padding:5px 12px;
-    font-size:11px;
-    font-weight:600;
+    padding:8px 12px;
     cursor:pointer;
-    box-shadow:
-        0 2px 4px rgba(0,0,0,0.2);
-    transition:all 0.2s ease;
-    min-height:28px;
 }
-
-button:hover{
-    background: linear-gradient(
-        180deg,
-        #7d6df5 0%,
-        #674cf8 100%
-    );
-    transform:translateY(-1px);
-    box-shadow:
-        0 4px 8px rgba(0,0,0,0.25);
-}
-
-button:active{
-    transform:translateY(1px);
-    box-shadow:
-        0 1px 2px rgba(0,0,0,0.2);
-}
-
-button:disabled{
-    background:#ccc;
-    cursor:not-allowed;
-    box-shadow:none;
-}
-
 
 table{
     width:100%;
     border-collapse:collapse;
-    font-size:12px;
 }
 
 th,
 td{
     border:1px solid #ddd;
-    padding:2px 4px;
+    padding:8px;
     text-align:center;
-    line-height:1.1;
 }
-
 
 th{
     background:#5b4df5;
@@ -297,55 +238,8 @@ th{
     background: #5b43ea;
     color: white;
 }    
-.delete-btn{
-    background: linear-gradient(
-        180deg,
-        #ff6b6b 0%,
-        #e74c3c 100%
-    );
-}
-
-.delete-btn:hover{
-    background: linear-gradient(
-        180deg,
-        #ff8080 0%,
-        #ff5a4d 100%
-    );
-}
-.add-btn{
-    background: linear-gradient(
-        180deg,
-        #2ecc71 0%,
-        #27ae60 100%
-    );
-}
-
-.add-btn:hover{
-    background: linear-gradient(
-        180deg,
-        #39d97f 0%,
-        #2dc96b 100%
-    );
-}      
-#saveBtn,
-#updateBtn{
-    min-width:100px;
-    height:34px;
-    font-size:12px;
-}
-.card{
-    background:#f8f8f8;
-    border:1px solid #ddd;
-    border-radius:10px;
-
-    box-shadow:
-        0 2px 8px rgba(0,0,0,0.08);
-}
-
 
       
-
-
 
       
 </style>
@@ -499,9 +393,7 @@ class="hidden"
         id="borrowBy"
         placeholder="ผู้เบิก"
     >
-<button
-    class="add-btn"
-    onclick="addBorrowLot()">
+<button onclick="addBorrowLot()">
     เพิ่มรายการ
 </button>
 
@@ -647,17 +539,14 @@ class="hidden"
         placeholder="ผู้คืน"
     >
 
-<button
-    class="add-btn"
-    onclick="addBorrowLot()">
-    เพิ่มรายการ
-</button>
+    <button onclick="addReturnLot()">
+        เพิ่มรายการ
+    </button>
 
     <table>
 
         <thead>
             <tr>
-                
                 <th>Lot</th>
                 <th>Qty</th>
                 <th>Action</th>
@@ -754,7 +643,6 @@ class="hidden"
 <thead>
 
 <tr>
-
 <th>PN</th>
 <th>Lot</th>
 <th>Date</th>
@@ -1005,7 +893,9 @@ function displayData(dataList=null){
     const data =
         (dataList || getStock())
         .slice()
-        .reverse();
+        .sort((a,b)=>
+            new Date(b.date) - new Date(a.date)
+        );
 
     const body =
         document.getElementById(
@@ -1085,11 +975,10 @@ if (
             แก้ไข
         </button>
 
-<button
-    class="delete-btn"
-    onclick="deleteItem(${index})">
-    ลบ
-</button>
+        <button
+            onclick="deleteItem(${index})">
+            ลบ
+        </button>
 
     `;
 }
@@ -1097,8 +986,7 @@ if (
 body.innerHTML += `
 
 <tr>
-    <td>${index + 1}</td>
-    
+
     <td>${item.pn}</td>
 
     <td>${item.lot}</td>
@@ -1873,11 +1761,10 @@ latestHistory.forEach((item,index) => {
     <td>${item.user}</td>
 
     <td>
-<button
-    class="delete-btn"
-    onclick="deleteItem(${index})">
-    ลบ
-</button>
+        <button
+            onclick="deleteHistory(${index})">
+            ลบ
+        </button>
     </td>
 </tr>
 `;
@@ -2001,11 +1888,9 @@ function renderBorrowList(){
             <td>${item.location || ''}</td>
             <td>${item.qty}</td>
             <td>
-<button
-    class="delete-btn"
-    onclick="deleteItem(${index})">
-    ลบ
-</button>
+                <button onclick="removeBorrowItem(${index})">
+                    ลบ
+                </button>
             </td>
         </tr>
         `;
@@ -2104,16 +1989,14 @@ function renderReturnList(){
 
         body.innerHTML += `
         <tr>
-           
             <td>${item.lot}</td>
             <td>${item.location || ''}</td>
             <td>${item.qty}</td>
             <td>
-<button
-    class="delete-btn"
-    onclick="deleteItem(${index})">
-    ลบ
-</button>
+                <button
+                    onclick="removeReturnItem(${index})">
+                    ลบ
+                </button>
             </td>
         </tr>
         `;
@@ -2227,7 +2110,6 @@ function displayBorrowDocuments(){
 
         body.innerHTML += `
         <tr>
-            <td>${index + 1}</td>
             <td>${doc.docNo}</td>
             <td>${doc.date}</td>
             <td>${doc.user}</td>
