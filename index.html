@@ -2138,17 +2138,18 @@ function viewBorrowDocument(docNo){
 window.onload = function(){
 
     const user =
-    localStorage.getItem(
-        "currentUser"
-    );
+        localStorage.getItem(
+            "currentUser"
+        );
 
     if(user){
-
         showMain();
-        displayHistory();  
 
+        displayHistory();
+
+        displayBorrowDocuments(); // เพิ่มบรรทัดนี้
     }
-      
+
 };
 
 </script>
