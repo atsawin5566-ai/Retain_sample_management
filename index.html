@@ -891,7 +891,11 @@ alert("✅ บันทึกสำเร็จ");
 function displayData(dataList=null){
 
     const data =
-        dataList || getStock();
+        (dataList || getStock())
+        .slice()
+        .sort((a,b)=>
+            new Date(b.date) - new Date(a.date)
+        );
 
     const body =
         document.getElementById(
