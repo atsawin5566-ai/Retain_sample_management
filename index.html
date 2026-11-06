@@ -224,7 +224,13 @@ th{
     background: #5b43ea;
     color: white;
 }
-
+.history-card thead th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #5b43ea;
+    color: white;
+}
       
 
       
@@ -656,31 +662,36 @@ class="hidden"
 
     <h3>📋 ประวัติการเบิก/คืน</h3>
 
-    <table>
+    <div style="
+        max-height:420px;
+        overflow-y:auto;
+    ">
 
-<thead>
-    <tr>
-        <th>No.</th>
-        <th>Date</th>
-        <th>Transaction</th>
-        <th>PN</th>
-        <th>Lot</th>
-        <th>Qty</th>
-        <th>User</th>
-        <th>Action</th>
-    </tr>
-</thead>
+        <table>
 
-        <tbody id="historyTable">
-        </tbody>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Date</th>
+                    <th>Transaction</th>
+                    <th>PN</th>
+                    <th>Lot</th>
+                    <th>Qty</th>
+                    <th>User</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
 
-    </table>
+            <tbody id="historyTable">
+            </tbody>
 
+        </table>
+
+    </div>
 
 </div>
 
-</div>
-
+      
 <script>
 
 /* USER */
