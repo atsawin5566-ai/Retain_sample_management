@@ -2110,6 +2110,8 @@ function displayBorrowDocuments(){
 
     latestDocs.forEach(doc => {
 
+         
+
         body.innerHTML += `
         <tr>
         <td>${index + 1}</td>
@@ -2127,6 +2129,8 @@ function displayBorrowDocuments(){
 
     });
 }
+ latestDocs.forEach((doc,index) => {
+      
 function viewBorrowDocument(docNo){
 
     const docs =
