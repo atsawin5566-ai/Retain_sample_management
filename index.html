@@ -626,7 +626,7 @@ class="hidden"
 
     <input
         id="search"
-        placeholder="ค้นหา PN หรือ Lot"
+        placeholder="ค้นหา Lot No."
     >
 
     <button onclick="searchItem()">
@@ -1169,34 +1169,23 @@ function deleteItem(index){
     displayData();
 }
       
+
 function searchItem(){
 
     const keyword =
+        document.getElementById(
+            "search"
+        ).value
+        .trim()
+        .toLowerCase();
 
-    document
-    .getElementById(
-        "search"
-    )
-    .value
-    .toLowerCase();
+    const stock =
+        getStock().filter(item =>
+            item.lot &&
+            item.lot.toLowerCase().includes(keyword)
+        );
 
-    const result =
-
-    getStock().filter(x =>
-
-        x.pn
-        .toLowerCase()
-        .includes(keyword)
-
-        ||
-
-        x.lot
-        .toLowerCase()
-        .includes(keyword)
-
-    );
-
-    displayData(result);
+    displayData(stock);
 
 }
 function getCurrentUser() {
@@ -1208,6 +1197,8 @@ function getCurrentUser() {
     );
 
 }
+
+      
 function borrowItem() {
 
     const user =
