@@ -1169,25 +1169,34 @@ function deleteItem(index){
     displayData();
 }
       
-
 function searchItem(){
 
     const keyword =
-        document.getElementById(
-            "search"
-        ).value
+        document.getElementById("search")
+        .value
         .trim()
         .toLowerCase();
 
-    const stock =
+    const result =
         getStock().filter(item =>
             item.lot &&
-            item.lot.toLowerCase().includes(keyword)
+            item.lot.toLowerCase()
+                .includes(keyword)
         );
 
-    displayData(stock);
+    if(result.length === 0){
+
+        alert(
+            "❌ ไม่พบ Lot : " + keyword
+        );
+
+        return;
+    }
+
+    displayData(result);
 
 }
+      
 function getCurrentUser() {
 
     return JSON.parse(
