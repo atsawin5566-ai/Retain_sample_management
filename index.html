@@ -203,6 +203,30 @@ th{
 .expired{
     border-left:5px solid red;
 }
+.stock-card thead th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.stock-scroll{
+    max-height: 420px;   /* ประมาณ 10 แถว */
+    overflow-y: auto;
+}
+
+.stock-scroll table{
+    width: 100%;
+}
+
+.stock-scroll thead th{
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #5b43ea;
+    color: white;
+}
+
+      
+
       
 
       
@@ -596,7 +620,12 @@ class="hidden"
 
 <div class="table-container">
 
-    <div class="card stock-card">
+<div class="card stock-card">
+
+<div style="
+    max-height:450px;
+    overflow-y:auto;
+">
 
 <table>
 
