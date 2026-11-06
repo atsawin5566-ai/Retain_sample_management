@@ -894,9 +894,7 @@ function displayData(dataList=null){
     const data =
         (dataList || getStock())
         .slice()
-        .sort((a,b)=>
-            new Date(b.date) - new Date(a.date)
-        );
+        .reverse();
 
     const body =
         document.getElementById(
