@@ -460,7 +460,13 @@ class="hidden"
     </button>
 
 </div>
-      <h3>ประวัติใบเบิกย้อนหลัง</h3>
+     <h3>ประวัติใบเบิกย้อนหลัง</h3>
+
+<div style="
+    max-height:250px;
+    overflow-y:auto;
+    border:1px solid #ddd;
+">
 <table>
       
     <thead>
@@ -2030,7 +2036,6 @@ function printBorrowDocument() {
 
 }
 function displayBorrowDocuments(){
-
     const docs =
         JSON.parse(
             localStorage.getItem(
@@ -2047,7 +2052,12 @@ function displayBorrowDocuments(){
 
     body.innerHTML = "";
 
-    docs.slice().reverse().forEach(doc => {
+    const latestDocs =
+        docs
+        .slice(-5)
+        .reverse();
+
+    latestDocs.forEach(doc => {
 
         body.innerHTML += `
         <tr>
@@ -2064,7 +2074,6 @@ function displayBorrowDocuments(){
         `;
 
     });
-
 }
 function viewBorrowDocument(docNo){
 
