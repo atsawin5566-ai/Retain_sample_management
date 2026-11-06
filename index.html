@@ -238,8 +238,47 @@ th{
     background: #5b43ea;
     color: white;
 }    
+.delete-btn{
+    background: linear-gradient(
+        180deg,
+        #ff6b6b 0%,
+        #e74c3c 100%
+    );
+}
 
-      
+.delete-btn:hover{
+    background: linear-gradient(
+        180deg,
+        #ff8080 0%,
+        #ff5a4d 100%
+    );
+}
+.add-btn{
+    background: linear-gradient(
+        180deg,
+        #2ecc71 0%,
+        #27ae60 100%
+    );
+}
+
+.add-btn:hover{
+    background: linear-gradient(
+        180deg,
+        #39d97f 0%,
+        #2dc96b 100%
+    );
+}      
+#saveBtn,
+#updateBtn{
+    min-width:100px;
+    height:34px;
+    font-size:12px;
+}
+
+
+
+
+
 
       
 </style>
@@ -393,7 +432,9 @@ class="hidden"
         id="borrowBy"
         placeholder="ผู้เบิก"
     >
-<button onclick="addBorrowLot()">
+<button
+    class="add-btn"
+    onclick="addBorrowLot()">
     เพิ่มรายการ
 </button>
 
@@ -540,9 +581,11 @@ class="hidden"
         placeholder="ผู้คืน"
     >
 
-    <button onclick="addReturnLot()">
-        เพิ่มรายการ
-    </button>
+<button
+    class="add-btn"
+    onclick="addBorrowLot()">
+    เพิ่มรายการ
+</button>
 
     <table>
 
@@ -976,10 +1019,11 @@ if (
             แก้ไข
         </button>
 
-        <button
-            onclick="deleteItem(${index})">
-            ลบ
-        </button>
+<button
+    class="delete-btn"
+    onclick="deleteItem(${index})">
+    ลบ
+</button>
 
     `;
 }
@@ -1763,10 +1807,11 @@ latestHistory.forEach((item,index) => {
     <td>${item.user}</td>
 
     <td>
-        <button
-            onclick="deleteHistory(${index})">
-            ลบ
-        </button>
+<button
+    class="delete-btn"
+    onclick="deleteItem(${index})">
+    ลบ
+</button>
     </td>
 </tr>
 `;
@@ -1890,9 +1935,11 @@ function renderBorrowList(){
             <td>${item.location || ''}</td>
             <td>${item.qty}</td>
             <td>
-                <button onclick="removeBorrowItem(${index})">
-                    ลบ
-                </button>
+<button
+    class="delete-btn"
+    onclick="deleteItem(${index})">
+    ลบ
+</button>
             </td>
         </tr>
         `;
@@ -1996,10 +2043,11 @@ function renderReturnList(){
             <td>${item.location || ''}</td>
             <td>${item.qty}</td>
             <td>
-                <button
-                    onclick="removeReturnItem(${index})">
-                    ลบ
-                </button>
+<button
+    class="delete-btn"
+    onclick="deleteItem(${index})">
+    ลบ
+</button>
             </td>
         </tr>
         `;
