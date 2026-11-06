@@ -557,6 +557,7 @@ class="hidden"
         <thead>
             <tr>
                 <th>Lot</th>
+                <th>Location</th>
                 <th>Qty</th>
                 <th>Action</th>
             </tr>
@@ -2000,6 +2001,7 @@ function renderReturnList(){
             <td>${item.lot}</td>
             <td>${item.location || ''}</td>
             <td>${item.qty}</td>
+            
             <td>
                 <button
                     onclick="removeReturnItem(${index})">
