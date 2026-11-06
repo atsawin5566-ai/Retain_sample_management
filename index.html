@@ -144,18 +144,28 @@ body{
 
 input,
 select{
-    padding: 5px 8px;
-    font-size: 12px;
-    border: 1px solid #b8b8b8;
-    border-radius: 5px;
-    background: #f8f8f8;
+    padding:5px 8px;
+    font-size:12px;
+    border:1px solid #c0c0c0;
+    border-radius:4px;
+    background:#fafafa;
 
-    /* ทำให้ดูเป็นร่องยุบ */
     box-shadow:
-        inset 0 2px 4px rgba(0,0,0,0.12),
-        inset 0 1px 1px rgba(255,255,255,0.8);
+        inset 0 2px 3px rgba(0,0,0,0.12);
 
-    transition: all 0.2s ease;
+    transition:0.2s;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:#5b43ea;
+
+    box-shadow:
+        inset 0 2px 3px rgba(0,0,0,0.15),
+        0 0 6px rgba(91,67,234,0.3);
+
+    background:#fff;
 }
 
 
