@@ -1724,7 +1724,7 @@ function displayHistory() {
 
 const latestHistory =
     history
-        .slice(-10)
+        .slice()
         .reverse();
 
 latestHistory.forEach((item,index) => {
@@ -2099,10 +2099,10 @@ function displayBorrowDocuments(){
 
     body.innerHTML = "";
 
-    const latestDocs =
-        docs
-        .slice(-5)
-        .reverse();
+const latestDocs =
+    docs
+    .slice()
+    .reverse();
 
     latestDocs.forEach(doc => {
 
